@@ -1,0 +1,8 @@
+# all persistent data goes here
+volumes
+
+# cache for environments
+custom/r10k/cache
+
+# r10k ssh keys
+custom/r10k/ssh
