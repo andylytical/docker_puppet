@@ -1,0 +1,19 @@
+---
+cachedir: "/etc/puppetlabs/r10k/cache"
+deploy:
+    purge_levels:
+      - environment
+    purge_whitelist:
+      - data
+      - legacy
+postrun:
+  - "/etc/puppetlabs/local/r10k/postrun.sh"
+sources:
+    control:
+        remote: https://github.com/andylytical/pupcontrol.git
+        basedir: "/etc/puppetlabs/code/environments"
+        invalid_branches: correct
+    hiera:
+        remote: https://github.com/andylytical/puphiera.git
+        basedir: "/etc/puppetlabs/code/data"
+        invalid_branches: correct
