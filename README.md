@@ -6,7 +6,7 @@
 # R10K
 ## Manually deploy environments
 1. Exec a bash shell in the running container
-   1. `docker exec -it dockerpup_puppetserver_1 /bin/bash`
+   1. `docker exec -it dockerpuppet_puppetserver_1 /bin/bash`
 1. Run r10k to deploy environments
    1. `r10k deploy environment -p -v debug2 |& tee /etc/puppetlabs/r10k/logs/deploy.log`
 
