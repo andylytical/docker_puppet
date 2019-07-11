@@ -4,7 +4,7 @@ ARG PUP_CUSTOM_DIR=/etc/puppetlabs/local
 
 # Install python3
 RUN apt update && \
-    apt install -y python3 python3-venv && \
+    apt install -y python3 python3-venv less && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 

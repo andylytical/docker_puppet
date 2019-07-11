@@ -1,8 +1,11 @@
 # all persistent data goes here
 volumes
 
-# cache for environments
+# r10k environments cache
 custom/r10k/cache
+
+# r10k deploy logs
+custom/r10k/logs
 
 # r10k ssh keys
 custom/r10k/ssh
