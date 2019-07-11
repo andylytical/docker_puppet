@@ -2,11 +2,12 @@ FROM puppet/puppetserver-standalone:5.3.7
 
 ARG PUP_CUSTOM_DIR=/etc/puppetlabs/local
 
-# Install python3
+# Install python3, symlink r10k
 RUN apt update && \
     apt install -y python3 python3-venv less && \
     apt clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /opt/puppetlabs/puppet/bin/r10k /opt/puppetlabs/bin/
 
 # Setup custom enc
 # NOTE: puppetserver:5.3.7 is based on ubuntu v.16 which does not have
