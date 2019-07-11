@@ -15,6 +15,12 @@ sources:
         invalid_branches: correct
         ignore_branch_prefixes:
           - master
+    local-hiera:
+        remote: https://github.com/andylytical/pup_hiera.git
+        basedir: "/etc/puppetlabs/code/data/01_local"
+        invalid_branches: correct
+        ignore_branch_prefixes:
+          - master
     shared-hiera:
         remote: https://github.com/andylytical/pup_hiera.git
         basedir: "/etc/puppetlabs/code/data/02_shared"
