@@ -2,8 +2,8 @@ version: "3"
 
 services:
 
-    puppetserver:
-        build: puppetserver
+    puppet:
+        build: server
         hostname: puppet.${DOMAIN:-internal}
         environment:
             PUPPERWARE_ANALYTICS_ENABLED: "false"
@@ -18,3 +18,7 @@ services:
           - ${VOLUME_ROOT:-.}/volumes/serverdata:/opt/puppetlabs/server/data/puppetserver/
           - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
 
+    agent_centos:
+        build: agent/centos
+        depends_on:
+          - puppet
