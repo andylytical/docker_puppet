@@ -3,7 +3,10 @@ version: "3"
 services:
 
     puppet:
-        build: server
+        build:
+          context: server
+          args:
+            PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
         hostname: puppet.${DOMAIN:-internal}
         environment:
             PUPPERWARE_ANALYTICS_ENABLED: "false"
@@ -19,6 +22,9 @@ services:
           - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
 
     agent_centos:
-        build: agent/centos
+        build:
+          context: agent/centos
+          args:
+            PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
         depends_on:
           - puppet

@@ -3,7 +3,8 @@
 
 FROM ubuntu:16.04
 
-ENV PUPPET_AGENT_VERSION="5.5.1" UBUNTU_CODENAME="xenial"
+ARG PUPPET_VERSION="5.3.7"
+ENV PUPPET_AGENT_VERSION=${PUPPET_VERSION} UBUNTU_CODENAME="xenial"
 
 # Install puppet agent
 RUN apt-get update && \

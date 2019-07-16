@@ -3,7 +3,8 @@
 
 FROM centos:7
 
-ENV PUPPET_AGENT_VERSION="5.5.1"
+ARG PUPPET_VERSION="5.3.7"
+ENV PUPPET_AGENT_VERSION=${PUPPET_VERSION}
 
 # Install puppet yum repo and puppet agent yum pkgs
 RUN rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm && \
