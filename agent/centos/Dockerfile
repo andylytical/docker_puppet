@@ -21,9 +21,12 @@ RUN yum install -y nmap-ncat && \
 
 # Install dumb-init for better signal handling
 ARG DUMB_INIT_VERSION="1.2.2"
-ADD https://github.com/Yelp/dumb-init/releases/download/v"${DUMB_INIT_VERSION}"/dumb-init_"${DUMB_INIT_VERSION}"_amd64 /dumb-init
-RUN chmod +x /dumb-init
-ENTRYPOINT ["/dumb-init", "--"]
+ADD https://github.com/Yelp/dumb-init/releases/download/v"${DUMB_INIT_VERSION}"/dumb-init_"${DUMB_INIT_VERSION}"_amd64 /usr/sbin/dumb-init
+RUN chmod +x /usr/sbin/dumb-init
 
+# Copy entrypoint
 COPY entrypoint.sh /usr/sbin/entrypoint
-CMD [ "entrypoint" ]
+RUN chmod +x /usr/sbin/entrypoint
+
+ENTRYPOINT ["dumb-init", "--", "entrypoint"]
+CMD ["sleep", "infinity"]

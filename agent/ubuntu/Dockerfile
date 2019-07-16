@@ -33,9 +33,10 @@ RUN apt-get update && \
 ARG DUMB_INIT_VERSION="1.2.2"
 ADD https://github.com/Yelp/dumb-init/releases/download/v"$DUMB_INIT_VERSION"/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
 RUN dpkg -i /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
-ENTRYPOINT ["dumb-init", "--"]
 
-#COPY entrypoint.sh /usr/sbin/entrypoint
-#ENTRYPOINT ["entrypoint"]
-#CMD ["puppet", "agent", "-t"]
-CMD [ "sleep", "infinity" ]
+# Copy entrypoint
+COPY entrypoint.sh /usr/sbin/entrypoint
+RUN chmod +x /usr/sbin/entrypoint
+
+ENTRYPOINT ["dumb-init", "--", "entrypoint"]
+CMD ["sleep", "infinity"]
