@@ -21,9 +21,17 @@ services:
           - ${VOLUME_ROOT:-.}/volumes/serverdata:/opt/puppetlabs/server/data/puppetserver/
           - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
 
-    agent_centos:
+    agent-centos:
         build:
           context: agent/centos
+          args:
+            PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
+        depends_on:
+          - puppet
+
+    agent-ubuntu:
+        build:
+          context: agent/ubuntu
           args:
             PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
         depends_on:
