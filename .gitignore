@@ -11,4 +11,4 @@ custom/r10k/logs
 custom/r10k/ssh
 
 # custom enc setup
-custom/enc
+custom/enc/*.db

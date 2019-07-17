@@ -1,0 +1,27 @@
+Nodes:
+    table_name: Nodes
+    columns:
+        fqdn:
+            - TEXT
+            - PRIMARY KEY
+            - NOT NULL
+        site:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "default"
+        datacenter:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "default"
+        cluster:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "default"
+        role:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "default"
+        environment:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "production"
