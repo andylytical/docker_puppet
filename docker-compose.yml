@@ -23,12 +23,12 @@ services:
       - ${CUSTOM_ROOT:-.}/custom/enc/tables.yaml:${PUP_CUSTOM_DIR:-/etc/puppetlabs/local/}/enc/tables.yaml
       - ${CUSTOM_ROOT:-.}/custom/enc/pup_enc.db:${PUP_CUSTOM_DIR:-/etc/puppetlabs/local/}/enc/pup_enc.db
 
-  agent-centos-prod:
+  agent-centos:
     build:
       context: agent/centos
       args:
         PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
-        PUPPET_AGENT_CERTNAME: agent-centos-prod
+        PUPPET_AGENT_CERTNAME: "${PUPPET_AGENT_CERTNAME:-agent-centos}"
     depends_on:
       - puppet
 
