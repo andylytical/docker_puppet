@@ -9,4 +9,6 @@ do
   sleep 1
 done
 
+puppet agent -t
+
 exec "$@"

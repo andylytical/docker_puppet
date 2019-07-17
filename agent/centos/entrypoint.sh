@@ -11,4 +11,4 @@ done
 
 puppet agent -t
 
-sleep infinity
+exec "$@"

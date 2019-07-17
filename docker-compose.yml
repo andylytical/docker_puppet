@@ -2,23 +2,37 @@ version: "3"
 
 services:
 
-    puppet:
-        build: server
-        hostname: puppet.${DOMAIN:-internal}
-        environment:
-            PUPPERWARE_ANALYTICS_ENABLED: "false"
-            # DNS_ALT_NAMES must be set before starting the stack the first time,
-            # and must list all the names under which the puppetserver can be
-            # reached. 'puppet.${DOMAIN:-internal}' must be one of them, otherwise puppetdb won't be
-            # able to get a cert. Add other names as a comma-separated list
-            #DNS_ALT_NAMES: puppet,puppet.${DOMAIN:-internal},${DNS_ALT_NAMES:-}
-        volumes:
-          - ${VOLUME_ROOT:-.}/volumes/code:/etc/puppetlabs/code/
-          - ${VOLUME_ROOT:-.}/volumes/puppet:/etc/puppetlabs/puppet/
-          - ${VOLUME_ROOT:-.}/volumes/serverdata:/opt/puppetlabs/server/data/puppetserver/
-          - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
+  puppet:
+    build:
+      context: server
+      args:
+        PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
+    hostname: puppet.${DOMAIN:-internal}
+    environment:
+      PUPPERWARE_ANALYTICS_ENABLED: "false"
+      # DNS_ALT_NAMES must be set before starting the stack the first time,
+      # and must list all the names under which the puppetserver can be
+      # reached. 'puppet.${DOMAIN:-internal}' must be one of them, otherwise puppetdb won't be
+      # able to get a cert. Add other names as a comma-separated list
+      #DNS_ALT_NAMES: puppet,puppet.${DOMAIN:-internal},${DNS_ALT_NAMES:-}
+    volumes:
+      - ${VOLUME_ROOT:-.}/volumes/code:/etc/puppetlabs/code/
+      - ${VOLUME_ROOT:-.}/volumes/puppet:/etc/puppetlabs/puppet/
+      - ${VOLUME_ROOT:-.}/volumes/serverdata:/opt/puppetlabs/server/data/puppetserver/
+      - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
 
-    agent_centos:
-        build: agent/centos
-        depends_on:
-          - puppet
+  agent-centos:
+    build:
+      context: agent/centos
+      args:
+        PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
+    depends_on:
+      - puppet
+
+  agent-ubuntu:
+    build:
+      context: agent/ubuntu
+      args:
+        PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
+    depends_on:
+    - puppet

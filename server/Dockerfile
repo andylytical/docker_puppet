@@ -1,4 +1,5 @@
-FROM puppet/puppetserver-standalone:5.3.7
+ARG PUPPET_VERSION="5.3.7"
+FROM puppet/puppetserver-standalone:${PUPPET_VERSION}
 
 ARG PUP_CUSTOM_DIR=/etc/puppetlabs/local
 

@@ -3,7 +3,8 @@
 
 FROM ubuntu:16.04
 
-ENV PUPPET_AGENT_VERSION="5.5.1" UBUNTU_CODENAME="xenial"
+ARG PUPPET_VERSION="5.3.7"
+ENV PUPPET_AGENT_VERSION=${PUPPET_VERSION} UBUNTU_CODENAME="xenial"
 
 # Install puppet agent
 RUN apt-get update && \
@@ -29,12 +30,14 @@ RUN apt-get update && \
 # Install dumb-init
 # See also:
 # https://github.com/puppetlabs/puppetserver/blob/master/docker/puppetserver-standalone/Dockerfile
-ENV DUMB_INIT_VERSION="1.2.1"
+ARG DUMB_INIT_VERSION="1.2.2"
 ADD https://github.com/Yelp/dumb-init/releases/download/v"$DUMB_INIT_VERSION"/dumb-init_"$DUMB_INIT_VERSION"_amd64.deb /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
-RUN dpkg -i /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
-ENTRYPOINT ["dumb-init", "--"]
+RUN dpkg -i /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb && \
+    rm -f /dumb-init_"$DUMB_INIT_VERSION"_amd64.deb
 
-#COPY entrypoint.sh /usr/sbin/entrypoint
-#ENTRYPOINT ["entrypoint"]
-#CMD ["puppet", "agent", "-t"]
-CMD [ "sleep", "infinity" ]
+# Copy entrypoint
+COPY entrypoint.sh /usr/sbin/entrypoint
+RUN chmod +x /usr/sbin/entrypoint
+
+ENTRYPOINT ["dumb-init", "--", "entrypoint"]
+CMD ["sleep", "infinity"]
