@@ -9,3 +9,6 @@ custom/r10k/logs
 
 # r10k ssh keys
 custom/r10k/ssh
+
+# custom enc setup
+custom/enc
