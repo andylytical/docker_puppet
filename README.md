@@ -23,15 +23,15 @@
 1. Check enc contents
    1. `docker exec -it dockerpup_server enc_adm -l`
 
-# More detailed examples
-1. Reset the entire environment to start from scratch
-   1. `.doit.sh reset`
-1. Remove containers and images, leave local customizations in place
-   1. `.doit.sh clean`
-1. Create just the server
-   1. `./doit.sh start puppet`
-1. Stop containers
-   1. `./doit.sh stop`
-1. Stop only a specific container
-   1. `./doit.sh stop <container_name>`
+# Additional examples
+* Reset the entire environment to start from scratch
+  * `.doit.sh reset`
+* Remove containers and images, leave local customizations in place
+  * `.doit.sh clean`
+* Create just the server
+  * `./doit.sh start puppet`
+* Stop containers
+  * `./doit.sh stop`
+* Stop only a specific container
+  * `./doit.sh stop <container_name>`
 
