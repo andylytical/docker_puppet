@@ -40,7 +40,8 @@ ask_yes_no() {
 
 
 do_setup() {
-    mkdir -p "${CUSTOM_ROOT}"/custom/{enc,r10k}
+    mkdir -p "${CUSTOM_ROOT}"/custom/r10k/logs
+    mkdir -p "${CUSTOM_ROOT}"/custom/enc
     touch "${CUSTOM_ROOT}"/custom/enc/tables.yaml
     touch "${CUSTOM_ROOT}"/custom/enc/pup_enc.db
 }
@@ -67,19 +68,42 @@ do_cleanup() {
     docker images --format "{{.ID}} {{.Repository}}" \
     | awk '/dockerpup/ {print $1}' \
     | xargs -r docker rmi
+
+    # remove extraneous networks
+    docker network prune --force
 }
 
 
 do_hard_cleanup() {
+    rm_dirs=()
     vol_dir=$(readlink -e "${VOLUME_ROOT}"/volumes)
     if [[ -d "$vol_dir"/code ]] ; then
+        rm_dirs+=( "$vol_dir" )
+    fi
+    r10k_dir=$(readlink -e "${CUSTOM_ROOT}"/custom/r10k)
+    cache_dir="${r10k_dir}"/cache
+    if [[ -d "$cache_dir" ]] ; then
+        rm_dirs+=( "$cache_dir" )
+    fi
+    log_dir="${r10k_dir}"/logs
+    if [[ -d "$log_dir" ]] ; then
+        rm_dirs+=( "$log_dir" )
+    fi
+    if [[ ${#rm_dirs[@]} -gt 0 ]] ; then
         echo
         echo "* * * WARNING * * *"
-        echo "About to recursively delete: '$vol_dir'"
+        echo "About to recursively delete directories:"
+        for d in "${rm_dirs[@]}"; do
+            echo "  $d"
+        done
         echo
         ask_yes_no \
-        && sudo -- rm -rf "$vol_dir"
+        && sudo -- rm -rf "${rm_dirs[@]}"
     fi
+    for fn in "${CUSTOM_ROOT}"/custom/enc/pup_enc.db ; do
+        [[ -f "$fn" ]] \
+        && rm "$fn"
+    done
 }
 
 
