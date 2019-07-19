@@ -7,6 +7,7 @@ services:
       context: server
       args:
         PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
+    container_name: dockerpup_server
     hostname: puppet.${DOMAIN:-internal}
     environment:
       PUPPERWARE_ANALYTICS_ENABLED: "false"
@@ -22,15 +23,20 @@ services:
       - ${CUSTOM_ROOT:-.}/custom/r10k:/etc/puppetlabs/r10k/
       - ${CUSTOM_ROOT:-.}/custom/enc/tables.yaml:${PUP_CUSTOM_DIR:-/etc/puppetlabs/local/}/enc/tables.yaml
       - ${CUSTOM_ROOT:-.}/custom/enc/pup_enc.db:${PUP_CUSTOM_DIR:-/etc/puppetlabs/local/}/enc/pup_enc.db
+    networks:
+      - dockerpup_net
 
   agent-centos:
     build:
       context: agent/centos
       args:
         PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
-        PUPPET_AGENT_CERTNAME: "${PUPPET_AGENT_CERTNAME:-agent-centos}"
+        PUPPET_AGENT_CERTNAME: "${PUPPET_AGENT_CERTNAME:-agent-centos-1}"
+    container_name: dockerpup_agent_centos
     depends_on:
       - puppet
+    networks:
+      - dockerpup_net
 
 #  agent-ubuntu:
 #    build:
@@ -39,3 +45,6 @@ services:
 #        PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
 #    depends_on:
 #    - puppet
+
+networks:
+  dockerpup_net:
