@@ -4,7 +4,7 @@ services:
 
   puppet:
     build:
-      context: ./server
+      context: server
       args:
         PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
     container_name: dockerpup_server
@@ -28,7 +28,7 @@ services:
 
   agent-centos:
     build:
-      context: ./agent/centos
+      context: agent/centos
       args:
         PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
         PUPPET_AGENT_CERTNAME: "${PUPPET_AGENT_CERTNAME:-agent-centos-1}"
