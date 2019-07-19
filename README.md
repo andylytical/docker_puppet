@@ -23,7 +23,7 @@
 1. Check enc contents
    1. `docker exec -it dockerpup_server enc_adm -l`
 
-# More detailed examples
+# Additional examples
 1. Reset the entire environment to start from scratch
    1. `.doit.sh reset`
 1. Remove containers and images, leave local customizations in place
