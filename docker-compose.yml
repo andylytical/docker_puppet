@@ -38,13 +38,5 @@ services:
     networks:
       - dockerpup_net
 
-#  agent-ubuntu:
-#    build:
-#      context: agent/ubuntu
-#      args:
-#        PUPPET_VERSION: "${PUPPET_VERSION:-5.3.7}"
-#    depends_on:
-#    - puppet
-
 networks:
   dockerpup_net:
