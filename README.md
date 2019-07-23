@@ -29,7 +29,23 @@
    grep -i error custom/r10k/logs/deploy.log | grep -vE 'error_document|pe_license|title patterns that use procs are not supported|enc_error'
    ```
 
-# More detailed examples
+## Setup ENC
+1. (ONE TIME SETUP) Initialize enc database
+   ```shell
+   docker exec -it dockerpup_server enc_adm -l &>/dev/null || docker exec -it dockerpup_server enc_adm --init
+   ```
+
+1. Add node `agent-centos-1` to enc
+   ```shell
+   docker exec -it dockerpup_server enc_adm --add --fqdn agent-centos-1
+   ```
+
+1. Check enc contents
+   ```shell
+   docker exec -it dockerpup_server enc_adm -l
+   ```
+
+# Additional examples
 1. Reset the entire environment to start from scratch
    ```shell
    ./doit.sh reset
