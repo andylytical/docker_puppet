@@ -15,8 +15,11 @@ RUN rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm 
     yum update -y && \
     yum install -y puppet-agent-"$PUPPET_AGENT_VERSION" && \
     yum clean all
-
 ENV PATH=/opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
+
+# Install additional packages for puppet module dependencies
+RUN yum install -y lvm2 && \
+    yum clean all
 
 # Install netcat (for network dependency checking in entrypoint)
 RUN yum install -y nmap-ncat && \
