@@ -30,19 +30,24 @@
    ```
 
 ## Setup ENC
-1. (ONE TIME SETUP) Initialize enc database
+1. ONE TIME SETUP (Initialize enc database, tell puppet to use enc)
    ```shell
-   docker exec -it dockerpup_server enc_adm -l &>/dev/null || docker exec -it dockerpup_server enc_adm --init
+   ./doit.sh enc
    ```
 
 1. Add node `agent-centos-1` to enc
    ```shell
-   docker exec -it dockerpup_server enc_adm --add --fqdn agent-centos-1
+   docker exec -it server enc_adm --add --fqdn agent-centos-1
+   ```
+
+1. Set node `agent-centos-1` to use topic branch `topic/aloftus/update_module_versions`
+   ```shell
+   docker exec -it server enc_adm --topic topic/aloftus/update_module_versions agent-centos-1
    ```
 
 1. Check enc contents
    ```shell
-   docker exec -it dockerpup_server enc_adm -l
+   docker exec -it server enc_adm -l
    ```
 
 # Additional examples

@@ -2,6 +2,9 @@
 
 source .env
 
+# Puppet server container name
+SRVR="${PUPPET_SERVER_CONTAINER_NAME}"
+
 
 usage() {
     cat <<ENDHERE
@@ -12,7 +15,7 @@ Options:
     -h   Print this help
 
 Action:
-    One of "setup", "start", "stop", "reset"
+    One of "setup", "start", "enc", "stop", "clean", "reset"
 
 ENDHERE
 }
@@ -47,6 +50,21 @@ do_setup() {
 }
 
 
+do_enc() {
+    numlines=$( docker exec -it $SRVR enc_adm -l 2>/dev/null | wc -l )
+    [[ $numlines -gt 0 ]] && return #stop if enc is already setup
+    # configure enc
+    set -x
+    docker exec -it $SRVR enc_adm -l &>/dev/null || docker exec -it $SRVR enc_adm --init
+    docker exec -it $SRVR puppet config set node_terminus exec --section master
+    docker exec -it $SRVR puppet config set external_nodes "$PUP_CUSTOM_DIR/enc/admin.py" --section master
+    set +x
+    # restart server
+    do_stop puppet
+    do_start puppet
+}
+
+
 do_start() {
     do_setup
     docker-compose up -d "$@"
@@ -59,6 +77,9 @@ do_stop() {
 
 
 do_cleanup() {
+# This cmd throws errors if images,containers,networks are already removed
+#    docker-compose down --rmi all --remove-orphans
+
     # remove containers
     docker ps -a --format "{{.ID}} {{.Names}}" \
     | awk '/dockerpup/{print $1}' \
@@ -126,6 +147,18 @@ action="$1"
 shift
 
 case $action in
+    clean)
+        do_stop
+        do_cleanup
+        ;;
+    enc)
+        do_enc
+        ;;
+    reset)
+        do_stop
+        do_cleanup
+        do_hard_cleanup
+        ;;
     setup)
         do_setup
         ;;
@@ -134,15 +167,6 @@ case $action in
         ;;
     stop)
         do_stop "$@"
-        ;;
-    clean)
-        do_stop
-        do_cleanup
-        ;;
-    reset)
-        do_stop
-        do_cleanup
-        do_hard_cleanup
         ;;
     *)
         err "Unknown action: '$action'"
