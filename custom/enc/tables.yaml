@@ -9,10 +9,6 @@ Nodes:
             - TEXT
             - NOT NULL
             - DEFAULT "default"
-        datacenter:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
         cluster:
             - TEXT
             - NOT NULL
