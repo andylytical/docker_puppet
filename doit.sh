@@ -67,7 +67,7 @@ do_enc() {
 
 do_start() {
     do_setup
-    docker-compose up -d "$@"
+    docker-compose up -d --build "$@"
 }
 
 
@@ -77,18 +77,22 @@ do_stop() {
 
 
 do_cleanup() {
-# This cmd throws errors if images,containers,networks are already removed
+#    "...compose down ..." throws errors if images,containers,networks are already removed
 #    docker-compose down --rmi all --remove-orphans
 
-    # remove containers
-    docker ps -a --format "{{.ID}} {{.Names}}" \
-    | awk '/dockerpup/{print $1}' \
-    | xargs -r docker rm -f
+    # list stopped and dead containers
+    tmpfn_images=$(mktemp)
+    tmpfn_containers=$(mktemp)
+    docker ps -a -f status=exited -f status=dead --format "{{.ID}} {{.Image}}" \
+    | >/dev/null tee \
+      >( awk '/dockerpup/{print $1}' > $tmpfn_containers ) \
+      >( awk '/dockerpup/{print $2}' > $tmpfn_images )
 
-    # Remove puppetservice images
-    docker images --format "{{.ID}} {{.Repository}}" \
-    | awk '/dockerpup/ {print $1}' \
-    | xargs -r docker rmi
+    # rm containers
+    xargs -a $tmpfn_containers -r docker rm -f
+
+    # Remove images
+    xargs -a $tmpfn_images -r docker rmi
 
     # remove extraneous networks
     docker network prune --force
@@ -148,7 +152,7 @@ shift
 
 case $action in
     clean)
-        do_stop
+        do_stop "$@"
         do_cleanup
         ;;
     enc)

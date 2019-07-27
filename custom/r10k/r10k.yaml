@@ -5,7 +5,6 @@ deploy:
       - environment
     purge_whitelist:
       - data
-      - legacy
 postrun:
   - "/etc/puppetlabs/local/r10k/postrun.sh"
 sources:
