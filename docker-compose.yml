@@ -36,7 +36,8 @@ services:
     hostname: ${PUPPET_AGENT_CERTNAME:-agent-centos-1}.${DOMAIN:-internal}
     networks: [ dockerpup_net ]
     privileged: true
-    volumes: [ /sys/fs/cgroup:/sys/fs/cgroup:ro ]
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
 networks:
   dockerpup_net:
