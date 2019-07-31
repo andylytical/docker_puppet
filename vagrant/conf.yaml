@@ -1,0 +1,66 @@
+---
+#####
+## Defaults will be over-written by per-guest values
+#defaults:
+#    box: bento/centos-7.6
+#    memory: 512
+#    env:
+#        PUP_INSTALL_BASEPATH: /vagrant
+#        PUP_INSTALL_OS_NAME: el
+#        PUP_INSTALL_OS_VER: 7
+#
+## Common data will be merged together with per-guest settings
+#common:
+#    env:
+#        PUPBKUPDIR: /vagrant/backups
+#    # commands are run in order specified here (top to bottom)
+#    shell_always:
+#      - cmd: chown -R root:root /vagrant/.ssh
+#    # commands are run in order specified here (top to bottom)
+#    shell_once:
+#      - cmd: /vagrant/scripts/centos_post.sh
+#      - cmd: |
+#             git config --global user.email "vagrant"
+#             git config --global user.name "vagrant"
+#             git config --global push.default simple
+#             ln -s /vagrant/.ssh /root/.ssh
+#             ln -s /vagrant /root/puppet_deployment
+#
+## Define each VM
+## Hash key is the VM name (use that argument to vagrant ssh)
+## Use 'hostname' to set the hostname, or omit for vagrant to use the hash key
+#guests:
+#    a1:
+#        hostname: agent01
+#        ip: 192.168.2.100
+#        env:
+#            PUP_MASTER: 10.0.2.2
+#            PUP_AGENT_CERTNAME: agent-centos-1
+#####
+
+defaults:
+    box: centos-custom
+    memory: 512
+
+common:
+    env: {}
+    shell_always: []
+    shell_once: []
+
+guests:
+    agent:
+        hostname: agent-centos-2
+        ip: 192.168.2.100
+    newimage:
+        box: bento/centos-7.6
+        env:
+            PUP_INSTALL_BASEPATH: /vagrant
+            PUP_INSTALL_OS_NAME: el
+            PUP_INSTALL_OS_VER: 7
+            PUP_INSTALL_VERBOSE: 1
+            PUP_INSTALL_DEBUG: 1
+            PUP_INSTALL_VERSION: 5
+            PUP_MASTER: 10.0.2.2
+        shell_once:
+          - cmd: /vagrant/centos_post.sh
+          - cmd: /vagrant/install_agent.sh

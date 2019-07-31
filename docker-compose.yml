@@ -15,7 +15,9 @@ services:
       # and must list all the names under which the puppetserver can be
       # reached. 'puppet.${DOMAIN:-internal}' must be one of them, otherwise puppetdb won't be
       # able to get a cert. Add other names as a comma-separated list
-      #DNS_ALT_NAMES: puppet,puppet.${DOMAIN:-internal},${DNS_ALT_NAMES:-}
+      DNS_ALT_NAMES: ${DNS_ALT_NAMES:-}
+    ports:
+      - 8140:8140
     volumes:
       - ${VOLUME_ROOT:-.}/volumes/code:/etc/puppetlabs/code/
       - ${VOLUME_ROOT:-.}/volumes/puppet:/etc/puppetlabs/puppet/

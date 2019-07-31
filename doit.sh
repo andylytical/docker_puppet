@@ -51,17 +51,31 @@ do_setup() {
 
 
 do_enc() {
-    numlines=$( docker exec -it $SRVR enc_adm -l 2>/dev/null | wc -l )
-    [[ $numlines -gt 0 ]] && return #stop if enc is already setup
     # configure enc
+    local restart_is_needed=0
     set -x
-    docker exec -it $SRVR enc_adm -l &>/dev/null || docker exec -it $SRVR enc_adm --init
-    docker exec -it $SRVR puppet config set node_terminus exec --section master
-    docker exec -it $SRVR puppet config set external_nodes "$PUP_CUSTOM_DIR/enc/admin.py" --section master
-    set +x
+    # setup enc; if needed
+    docker exec -it $SRVR enc_adm -l &>/dev/null || { 
+        docker exec -it $SRVR enc_adm --init
+        restart_is_needed=1
+    }
+    # configure node_terminus; if needed
+    docker exec -it $SRVR puppet config print node_terminus --section master | grep -q -F exec || {
+        docker exec -it $SRVR puppet config set node_terminus exec --section master
+        restart_is_needed=1
+    }
+    # configure external_nodes; if needed
+    local path="$PUP_CUSTOM_DIR/enc/admin.py"
+    docker exec -it $SRVR puppet config print external_nodes --section master | grep -q -F "$path" || {
+        docker exec -it $SRVR puppet config set external_nodes "$path" --section master
+        restart_is_needed=1
+    }
     # restart server
-    do_stop puppet
-    do_start puppet
+    if [[ $restart_is_needed -eq 1 ]]; then
+        do_stop puppet
+        do_start puppet
+    fi
+    set +x
 }
 
 
@@ -85,8 +99,8 @@ do_cleanup() {
     tmpfn_containers=$(mktemp)
     docker ps -a -f status=exited -f status=dead --format "{{.ID}} {{.Image}}" \
     | >/dev/null tee \
-      >( awk '/dockerpup/{print $1}' > $tmpfn_containers ) \
-      >( awk '/dockerpup/{print $2}' > $tmpfn_images )
+      >( awk '/docker_puppet/{print $1}' > $tmpfn_containers ) \
+      >( awk '/docker_puppet/{print $2}' > $tmpfn_images )
 
     # rm containers
     xargs -a $tmpfn_containers -r docker rm -f

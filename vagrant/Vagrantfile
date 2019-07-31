@@ -1,0 +1,68 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+#require 'pp'
+load 'funcs.rb'
+
+# Get values from yaml config file
+# (See also: https://stackoverflow.com/a/26394449 )
+conf = YAML.load_file( "conf.yaml" )
+defaults = conf['defaults']
+common = conf['common']
+guests = conf['guests']
+
+
+Vagrant.configure("2") do |config|
+    # Loop through guest definitions
+    guests.each do |nodeName, nodeData|
+        data = defaults.merge( nodeData )
+        config.vm.define nodeName do |node|
+            # Host Details
+            node.vm.box = data['box']
+            if data.key? 'hostname'
+                node.vm.hostname = data['hostname']
+            else
+                node.vm.hostname = nodeName
+            end
+            node.vm.network "private_network", network_options( data )
+            node.vm.provider :virtualbox do |vb|
+                vb.memory = data['memory'] if data.key? 'memory'
+                vb.cpus = data['cpus'] if data.key? 'cpus'
+            end
+
+            # Forwarded Ports
+            portData = concat_child_arrays( common, data, 'forwarded_ports' )
+#            puts "portData for node '#{nodeName}'"
+#            pp portData
+            forwarded_ports( node.vm, portData )
+
+            # Environment Variables
+            envData = merge_child_hashes( data, common, 'env' )
+#            puts "envData for node '#{nodeName}'"
+#            pp envData
+            setenv( node.vm, envData )
+
+#            # Synced Folders
+#            TODO doesnt work, needs fixing
+#            syncData = concat_child_arrays( common, data, 'synced_folders' )
+##            puts "syncData for node '#{nodeName}'"
+##            pp syncData
+#            custom_synced_folders( node.vm, syncData )
+
+            # Shell Provisioners (always)
+            alwaysData = concat_child_arrays( common, data, 'shell_always' )
+#            puts "alwaysData for node '#{nodeName}'"
+#            pp alwaysData
+            shell_provisioners_always( node.vm, alwaysData )
+
+            # Shell Provisioners (once)
+            onceData = concat_child_arrays( common, data, 'shell_once' )
+#            puts "onceData for node '#{nodeName}'"
+#            pp onceData
+            shell_provisioners_once( node.vm, onceData )
+
+        end
+    end
+
+end

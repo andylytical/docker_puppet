@@ -78,8 +78,12 @@
    ```shell
    ./doit.sh stop <container_name>
    ```
-
 1. Run puppet agent in **_dry run_** mode (don't make any changes, only list what would be done)
    ```shell
    docker exec -it agent-centos-1 puppet agent -t --noop
+   ```
+1. Restart puppetserver (needed after, for instance, making config or cert changes)
+   ```shell
+   docker exec -it server pkill -HUP -u puppet java
+   docker logs server #optional, to monitor server restart
    ```

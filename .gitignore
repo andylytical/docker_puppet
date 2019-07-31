@@ -12,3 +12,7 @@ custom/r10k/ssh
 
 # custom enc setup
 custom/enc/*.db
+
+# vagrant stuff
+.vagrant/
+*.box
