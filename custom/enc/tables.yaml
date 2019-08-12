@@ -17,10 +17,6 @@ Nodes:
             - TEXT
             - NOT NULL
             - DEFAULT "default"
-        type:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
         environment:
             - TEXT
             - NOT NULL
