@@ -37,7 +37,7 @@
 
 1. Add node `agent-centos-1` to enc
    ```shell
-   docker exec -it server enc_adm --add --fqdn agent-centos-1
+   docker exec -it server enc_adm --add --fqdn agent-centos-1.internal
    ```
 
 1. Check enc contents
@@ -46,7 +46,7 @@
    ```
 
 ## Run puppet agent to test changes on a topic branch
-1. Update enc for the node to use a topic branch
+1. (Optional) Update enc for the node to use a topic branch
    ```shell
    docker exec -it server enc_adm --topic topic/aloftus/update_module_versions agent-centos-1
    docker exec -it server enc_adm -l
@@ -87,3 +87,5 @@
    docker exec -it server pkill -HUP -u puppet java
    docker logs server #optional, to monitor server restart
    ```
+# Test puppet agent from a vagrant VM
+See: [vagrant/README](vagrant/README.md)

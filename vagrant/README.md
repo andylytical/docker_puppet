@@ -5,15 +5,29 @@ done from a VM.
 
 ### Create the custom virtualbox image
 Needed only once. Note also, this will always rebuild a new image and wipe out the old one.
-1. `./mk-custom-image.sh`
+```shell
+./mk-custom-image.sh
+```
 
-### Start a test VM
-1. `vagrant up agent`
+### Add test VM to puppetserver ENC
+(needed only once)
+```shell
+   pushd ..
+   docker exec -it server enc_adm --add --fqdn agent-centos-2.internal
+   popd
+```
 
-### Run puppet agent in the VM
-1. `vagrant ssh agent01`
-   1. `sudo su -`
-   1. `puppet agent -t`
+### Run puppet agent on a test VM
+```shell
+   vagrant up agent
+   vagrant ssh agent01
+   sudo su -
+   puppet agent -t
+```
 
 # Miscellaneous
 * See `conf.yaml` to adjust settings of the VM guest
+* Delete existing VM guests
+  ```shell
+  vagrant destroy --force --parallel
+  ```

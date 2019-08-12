@@ -72,8 +72,7 @@ do_enc() {
     }
     # restart server
     if [[ $restart_is_needed -eq 1 ]]; then
-        do_stop puppet
-        do_start puppet
+        docker exec -it $SRVR pkill -HUP -u puppet java
     fi
     set +x
 }
