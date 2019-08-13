@@ -31,4 +31,8 @@ Needed only once. Note also, this will always rebuild a new image and wipe out t
   ```shell
   vagrant destroy --force --parallel
   ```
-** Note: Must also run `puppet cert clean agent-centos-1.internal` on the puppet master
+** Note: Must also clean up old certs on the puppet master:
+   ```shell
+   puppet cert clean agent-centos-2.internal
+   pkill -HUP -u puppet java
+   ```
