@@ -20,7 +20,7 @@ Needed only once. Note also, this will always rebuild a new image and wipe out t
 ### Run puppet agent on a test VM
 ```shell
    vagrant up agent
-   vagrant ssh agent01
+   vagrant ssh agent
    sudo su -
    puppet agent -t
 ```
