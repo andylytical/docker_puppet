@@ -5,24 +5,16 @@ done from a VM.
 
 ### Create the custom virtualbox image
 Needed only once. Note also, this will always rebuild a new image and wipe out the old one.
+Use command `vagrant box list` to see image status.
 ```shell
 ./mk-custom-image.sh
 ```
 
-### Add test VM to puppetserver ENC
-(needed only once)
-```shell
-   pushd ..
-   docker exec -it server enc_adm --add --fqdn agent-centos-2.internal
-   popd
-```
 
 ### Run puppet agent on a test VM
 ```shell
    vagrant up agent
-   vagrant ssh agent
-   sudo su -
-   puppet agent -t
+   vagrant ssh agent -c 'sudo /opt/puppetlabs/bin/puppet agent -t'
 ```
 
 # Miscellaneous
@@ -33,6 +25,7 @@ Needed only once. Note also, this will always rebuild a new image and wipe out t
   ```
 ** Note: Must also clean up old certs on the puppet master:
    ```shell
+   # use docker-compose command to exec a bash shell on the puppet master, then do:
    puppet cert clean agent-centos-2.internal
    pkill -HUP -u puppet java
    ```
