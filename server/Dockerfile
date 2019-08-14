@@ -3,12 +3,24 @@ FROM puppet/puppetserver-standalone:${PUPPET_VERSION}
 
 ARG PUP_CUSTOM_DIR=/etc/puppetlabs/local
 
-# Install python3, symlink r10k
+# Install python3
 RUN apt update && \
     apt install -y python3 python3-venv less && \
     apt clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    ln -s /opt/puppetlabs/puppet/bin/r10k /opt/puppetlabs/bin/
+    rm -rf /var/lib/apt/lists/*
+
+# Custom r10k runner
+ARG R10K=/opt/puppetlabs/bin/r10k
+RUN curl -s https://raw.githubusercontent.com/ncsa/puppet-r10k/master/templates/r10k_exec_wrapper_script.epp \
+    | sed -ne '/^#!\/bin\/bash/,$p' \
+    | sed -e '/^PIDFILE=/c\PIDFILE=/var/run/r10k' \
+          -e '/^R10K=/c\R10K=/opt/puppetlabs/puppet/bin/r10k' \
+          -e '/^LOGDIR=/c\LOGDIR=/etc/puppetlabs/r10k/logs' \
+    >${R10K} \
+    && chmod +x ${R10K} \
+    && ln -s ${R10K} /
+ENV PATH=/:$PATH
+#          -e '/^LOGFILE=/c\LOGFILE="${LOGDIR}/deploy.log"'
 
 # Setup custom enc
 # NOTE: puppetserver:5.3.7 is based on ubuntu v.16 which does not have

@@ -14,8 +14,11 @@ Usage: $0 [options] action
 Options:
     -h   Print this help
 
-Action:
-    One of "setup", "start", "enc", "stop", "clean", "reset"
+Actions:
+    start: Start specified container (or all containers if none specified)
+     stop: Stop the specified container (or all containers if none specified)
+    clean: (same as "stop", plus) remove containers, images and networks
+    reset: (same as "clean", plus) remove locally stored content from the containers
 
 ENDHERE
 }
@@ -42,6 +45,33 @@ ask_yes_no() {
 }
 
 
+is_server_running() {
+    docker exec -it $SRVR /healthcheck.sh &>/dev/null
+}
+
+
+wait_for_server() {
+    # Wait for server to start
+    local RC
+    for i in {1..5} ; do
+        is_server_running
+        RC=$?
+        [[ $RC -eq 0 ]] && break
+        [[ $i -eq 1 ]] && echo -n "(waiting for server to start... "
+        echo -n "$i "
+        sleep 10
+    done
+    [[ $RC -eq 0 ]] && echo -n "OK) " || echo -n "ERR) "
+    return $RC
+}
+
+
+restart_server() {
+    wait_for_server \
+    && docker exec -it $SRVR pkill -HUP -u puppet java
+}
+
+
 do_setup() {
     mkdir -p "${CUSTOM_ROOT}"/custom/r10k/logs
     mkdir -p "${CUSTOM_ROOT}"/custom/enc
@@ -52,35 +82,39 @@ do_setup() {
 
 do_enc() {
     # configure enc
+    echo -n "Check ENC setup... "
     local restart_is_needed=0
-    set -x
     # setup enc; if needed
     docker exec -it $SRVR enc_adm -l &>/dev/null || { 
         docker exec -it $SRVR enc_adm --init
-        restart_is_needed=1
+        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-1.internal
+        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-2.internal
     }
     # configure node_terminus; if needed
     docker exec -it $SRVR puppet config print node_terminus --section master | grep -q -F exec || {
+        wait_for_server
         docker exec -it $SRVR puppet config set node_terminus exec --section master
         restart_is_needed=1
     }
     # configure external_nodes; if needed
     local path="$PUP_CUSTOM_DIR/enc/admin.py"
     docker exec -it $SRVR puppet config print external_nodes --section master | grep -q -F "$path" || {
+        wait_for_server
         docker exec -it $SRVR puppet config set external_nodes "$path" --section master
         restart_is_needed=1
     }
     # restart server
     if [[ $restart_is_needed -eq 1 ]]; then
-        docker exec -it $SRVR pkill -HUP -u puppet java
+        restart_server
     fi
-    set +x
+    echo "OK"
 }
 
 
 do_start() {
     do_setup
     docker-compose up -d --build "$@"
+    do_enc
 }
 
 
@@ -138,17 +172,17 @@ do_hard_cleanup() {
         ask_yes_no \
         && sudo -- rm -rf "${rm_dirs[@]}"
     fi
-    for fn in "${CUSTOM_ROOT}"/custom/enc/pup_enc.db ; do
-        [[ -f "$fn" ]] \
-        && rm "$fn"
-    done
+#    for fn in "${CUSTOM_ROOT}"/custom/enc/pup_enc.db ; do
+#        [[ -f "$fn" ]] \
+#        && rm "$fn"
+#    done
 }
 
 
 ENDWHILE=0
 while [[ $# -gt 0 ]] && [[ $ENDWHILE -eq 0 ]] ; do
   case $1 in
-    -h) usage;;
+    -h) usage; exit 0;;
     --) ENDWHILE=1;;
     -*) echo "Invalid option '$1'"; exit 1;;
      *) ENDWHILE=1; break;;
