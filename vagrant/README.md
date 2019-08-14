@@ -23,9 +23,9 @@ Use command `vagrant box list` to see image status.
   ```shell
   vagrant destroy --force --parallel
   ```
-** Note: Must also clean up old certs on the puppet master:
+  * Note: Must also clean up the current cert on the puppet master:
    ```shell
-   # use docker-compose command to exec a bash shell on the puppet master, then do:
+   # from a bash shell in the puppet master container:
    puppet cert clean agent-centos-2.internal
    pkill -HUP -u puppet java
    ```
