@@ -53,15 +53,17 @@ is_server_running() {
 wait_for_server() {
     # Wait for server to start
     local RC
-    for i in {1..5} ; do
-        is_server_running
-        RC=$?
-        [[ $RC -eq 0 ]] && break
-        [[ $i -eq 1 ]] && echo -n "(waiting for server to start... "
-        echo -n "$i "
-        sleep 10
-    done
-    [[ $RC -eq 0 ]] && echo -n "OK) " || echo -n "ERR) "
+    is_server_running || {
+        for i in {1..5} ; do
+            [[ $i -eq 1 ]] && echo -n "(waiting for server to start... "
+            echo -n "$i "
+            sleep 10
+            is_server_running
+            RC=$?
+            [[ $RC -eq 0 ]] && break
+        done
+        [[ $RC -eq 0 ]] && echo -n "OK) " || echo -n "ERR) "
+    }
     return $RC
 }
 
