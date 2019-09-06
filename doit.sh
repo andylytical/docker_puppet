@@ -133,9 +133,9 @@ do_cleanup() {
     tmpfn_images=$(mktemp)
     tmpfn_containers=$(mktemp)
     docker ps -a -f status=exited -f status=dead --format "{{.ID}} {{.Image}}" \
-    | >/dev/null tee \
-      >( awk '/docker_puppet/{print $1}' > $tmpfn_containers ) \
-      >( awk '/docker_puppet/{print $2}' > $tmpfn_images )
+    | tee >( awk '/docker_(puppet|agent)/{print $1}' > $tmpfn_containers ) \
+          >( awk '/docker_(puppet|agent)/{print $2}' > $tmpfn_images ) \
+          >/dev/null
 
     # rm containers
     xargs -a $tmpfn_containers -r docker rm -f
