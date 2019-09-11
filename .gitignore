@@ -16,3 +16,6 @@ custom/enc/*.db
 # vagrant stuff
 .vagrant/
 *.box
+
+# development cruft
+*.orig

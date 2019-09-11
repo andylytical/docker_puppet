@@ -2,15 +2,18 @@
 # https://github.com/puppetlabs/puppet-in-docker/blob/master/puppet-agent-centos/Dockerfile
 # https://hub.docker.com/r/centos/systemd/dockerfile
 
-FROM centos:7
+ARG CENTOS_VER_MAJ
+FROM centos:${CENTOS_VER_MAJ}
 
-ARG PUPPET_VERSION="5.3.7"
-ARG DUMB_INIT_VERSION="1.2.2"
+ARG CENTOS_VER_MAJ
+ARG PUPPET_VER_MAJ
+ARG PUPPET_VERSION
+ARG DUMB_INIT_VERSION
 ARG PUPPET_AGENT_CERTNAME
 
 # Install puppet yum repo and puppet agent yum pkgs
 ENV PUPPET_AGENT_VERSION ${PUPPET_VERSION}
-RUN rpm -Uvh https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm && \
+RUN rpm -Uvh https://yum.puppetlabs.com/puppet${PUPPET_VER_MAJ}-release-el-${CENTOS_VER_MAJ}.noarch.rpm && \
     yum upgrade -y && \
     yum update -y && \
     yum install -y puppet-agent-"$PUPPET_AGENT_VERSION" && \

@@ -52,7 +52,7 @@ guests:
         hostname: agent-centos-2.internal
         ip: 192.168.2.100
     newimage:
-        box: bento/centos-7.6
+        box: bento/centos-7
         env:
             PUP_INSTALL_BASEPATH: /vagrant
             PUP_INSTALL_OS_NAME: el
