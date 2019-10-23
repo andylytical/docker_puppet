@@ -3,7 +3,7 @@ FROM puppet/puppetserver:${PUPPET_VERSION}
 
 ARG PUP_CUSTOM_DIR=/etc/puppetlabs/local
 
-# Install python3
+# Install python3 (needed for r10k and enc)
 RUN apt update && \
     apt install -y python3 python3-venv less && \
     apt clean && \
@@ -32,3 +32,9 @@ RUN git clone https://github.com/ncsa/puppetserver-local.git \
         --single-branch \
         $PUP_CUSTOM_DIR && \
     $PUP_CUSTOM_DIR/configure.sh
+
+# Install ssh (needed for tunneled access to firewalled resources)
+RUN apt update && \
+    apt install -y ssh && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*

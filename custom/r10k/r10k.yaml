@@ -15,7 +15,7 @@ sources:
         ignore_branch_prefixes:
           - master
     private-hiera:
-        remote: https://github.com/andylytical/pup_hiera_priv.git
+        remote: git@lsst-git.ncsa.illinois.edu:lsst-it/hiera-ncsa-private.git
         basedir: "/etc/puppetlabs/code/data/private"
         invalid_branches: correct
         ignore_branch_prefixes:
