@@ -19,3 +19,6 @@ custom/enc/*.db
 
 # development cruft
 *.orig
+
+# backup krb5 keytabs
+*.keytab
