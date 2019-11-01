@@ -21,4 +21,4 @@ custom/enc/*.db
 *.orig
 
 # backup krb5 keytabs
-*.keytab
+*.keytab-*
