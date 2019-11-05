@@ -101,6 +101,20 @@ See: [vagrant/README](vagrant/README.md)
   docker exec -it server enc_adm --help
   ```
 
+### R10K Errors (ie: unable to sync repo to unresolvable ref)
+R10K has a known issue [RK-323](https://tickets.puppetlabs.com/browse/RK-323) that
+causes issues with cached values or modules. This workaround deletes all caches and
+currently deployed modules.  It is safe to use always, even if the issue isn't 
+currently happening, however it causes the r10k run to take
+longer since all the repos and modules must be re-downloaded.
+```shell
+# workaround only - delete all currently deployed environments and r10k cache
+docker-compose exec puppet bash -c 'rm -rf /etc/puppetlabs/code/* /var/cache/r10k'
+
+# workaround , then re-run r10k deploy
+docker-compose exec puppet bash -c 'rm -rf /etc/puppetlabs/code/* /var/cache/r10k; /r10k'
+```
+
 ### Secure access to a private hiera repo
 * Create an ssh key to use as a deploy key
   ```shell
