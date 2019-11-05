@@ -100,3 +100,71 @@ See: [vagrant/README](vagrant/README.md)
   ```shell
   docker exec -it server enc_adm --help
   ```
+
+### Secure access to a private hiera repo
+* Create an ssh key to use as a deploy key
+  ```shell
+  mkdir -p custom/r10k/ssh
+  ssh-keygen -t ed25519 -f custom/r10k/ssh/private-hiera-deploy-key
+  ```
+* Install public portion of deploy key on the git server
+  * Refer to your specific git server documentation
+* Create necessary ssh config to tunnel through any bastion/proxy hosts
+  ```shell
+  vim -p custom/r10k/ssh/config
+  ```
+  ```SSH Config
+  # SAMPLE SSH CONFIG
+  Host bastion
+      Hostname bastion.fqdn
+      User your_user_name
+  Host proxy
+      Hostname proxy.fq.dn
+      User a_valid_username
+      ProxyCommand ssh -W %h:%p bastion
+  Host git-sec
+      Hostname git-secure.f.q.d.n
+      User git
+      PreferredAuthentications publickey
+      IdentityFile /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
+      ForwardX11 no
+      ProxyCommand ssh -W %h:%p proxy
+  Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+  ControlMaster auto
+  ControlPath ~/%l-%r@%h:%p
+  ControlPersist 2d
+  ```
+* Link custom ssh directory to root's home inside the container
+  ```shell
+  docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
+  ```
+* Initialize ssh connection from container to the secure git server
+  ```shell
+  docker-compose exec puppet ssh -T git-sec
+  # above will require manual login to bastion, proxy, etc.
+  ```
+* Verify non-interactive login (re-uses the authenticated channel created above)
+  ```shell
+  docker-compose exec puppet ssh -T git-sec
+  ```
+* Ensure `r10k.yaml` uses ssh for access to private hiera
+  * The "source" for private hiera should use the `git@server:repo` format, such as:
+  ```YAML
+  sources:
+    private-hiera:
+      remote: git@git-sec:lsst-it/hiera-private.git
+  ```
+* Verify r10k access to all repos listed in `r10k.yaml`
+  ```shell
+  docker-compose exec puppet bash -c 'awk "\$1==\"remote:\"{print \$NF}" /etc/puppetlabs/r10k/r10k.yaml | xargs -n1 git ls-remote'
+  ```
+  NOTE: from within container, just run:
+  ```shell
+  awk '$1=="remote:"{print $NF}' /etc/puppetlabs/r10k/r10k.yaml | xargs -n1 git ls-remote
+  ```
+* From now on, while puppetserver container is up, run r10k as usual...
+  ```shell
+  docker-compose exec puppet /r10k
+  ```
