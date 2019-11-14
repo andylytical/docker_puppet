@@ -153,6 +153,7 @@ docker-compose exec puppet bash -c 'rm -rf /etc/puppetlabs/code/* /var/cache/r10
 * Link custom ssh directory to root's home inside the container
   ```shell
   docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
+  docker-compose exec puppet chown root:root /root/.ssh/config
   ```
 * Initialize ssh connection from container to the secure git server
   ```shell
@@ -163,6 +164,9 @@ docker-compose exec puppet bash -c 'rm -rf /etc/puppetlabs/code/* /var/cache/r10
   ```shell
   docker-compose exec puppet ssh -T git-sec
   ```
+  Note: If password prompts continue, might have to login directly to each host
+  in the path.  Check for files (inside the container), should have one per host:
+  `/root/puppet.internal-<USER>@<HOST>:22=`
 * Ensure `r10k.yaml` uses ssh for access to private hiera
   * The "source" for private hiera should use the `git@server:repo` format, such as:
   ```YAML

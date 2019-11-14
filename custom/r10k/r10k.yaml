@@ -9,7 +9,7 @@ postrun:
   - "/etc/puppetlabs/local/r10k/postrun.sh"
 sources:
     control:
-        remote: https://github.com/andylytical/pup_control.git
+        remote: https://github.com/lsst-it/lsst-itconf.git
         basedir: "/etc/puppetlabs/code/environments"
         invalid_branches: correct
         ignore_branch_prefixes:
@@ -21,7 +21,7 @@ sources:
         ignore_branch_prefixes:
           - master
     public-hiera:
-        remote: https://github.com/andylytical/pup_hiera.git
+        remote: https://github.com/lsst-it/lsst-puppet-hiera.git
         basedir: "/etc/puppetlabs/code/data/public"
         invalid_branches: correct
         ignore_branch_prefixes:
