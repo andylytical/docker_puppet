@@ -53,7 +53,7 @@ services:
       - 5432
     volumes:
       - ${VOLUME_ROOT:-./volumes}/puppetdb-postgres/data:/var/lib/postgresql/data
-      - ./postgres-custom:/docker-entrypoint-initdb.d
+      - ${CUSTOM_ROOT:-./custom}/postgres:/docker-entrypoint-initdb.d
     dns_search: ${DOMAIN:-internal}
     networks:
       default:

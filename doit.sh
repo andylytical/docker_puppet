@@ -82,10 +82,10 @@ restart_server() {
 
 do_setup() {
     mkdir -p "${VOLUME_ROOT}"/freeipa/data
-    cp freeipa/ipa-server-install-options "${VOLUME_ROOT}"/freeipa/data
     mkdir -p "${VOLUME_ROOT}"/freeipa/logs/httpd
-    mkdir -p "${CUSTOM_ROOT}"/r10k/logs
+    cp freeipa/ipa-server-install-options "${VOLUME_ROOT}"/freeipa/data
     mkdir -p "${CUSTOM_ROOT}"/enc
+    mkdir -p "${CUSTOM_ROOT}"/r10k/logs
     touch "${CUSTOM_ROOT}"/enc/tables.yaml
     touch "${CUSTOM_ROOT}"/enc/pup_enc.db
 }
