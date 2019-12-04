@@ -23,7 +23,7 @@
 
 ## Run puppet agent
 ```shell
-docker exec -it agent-centos-1 puppet agent -t
+docker-compose exec agent-centos puppet agent -t
 ```
 
 
@@ -31,12 +31,12 @@ docker exec -it agent-centos-1 puppet agent -t
 After commiting changes on a "topic" branch of the repo:
 1. Update enc for the node to use a topic branch
    ```shell
-   docker exec -it server enc_adm --topic topic/aloftus/update_module_versions agent-centos-1.internal
-   docker exec -it server enc_adm -l
+   docker-compose exec puppet server enc_adm --topic topic/aloftus/update_module_versions agent-centos-1.internal
+   docker-compose exec puppet server enc_adm -l
    ```
 1. Run puppet agent
    ```shell
-   docker exec -it agent-centos-1 puppet agent -t
+   docker-compose exec agent-centos puppet agent -t
    ```
 
 
@@ -70,12 +70,12 @@ See: [vagrant/README](vagrant/README.md)
 ### Puppet Agent
 * Run puppet agent in **_dry run_** mode (don't make any changes, only list what would be done)
   ```shell
-  docker exec -it agent-centos-1 puppet agent -t --noop
+  docker-compose exec agent-centos puppet agent -t --noop
   ```
 ### Puppet Server
 * Restart puppetserver (needed after, for instance, making config or cert changes)
   ```shell
-  docker exec -it server pkill -HUP -u puppet java
+  docker-compose exec puppet server pkill -HUP -u puppet java
   docker logs server #optional, to monitor server restart
   ```
 * Exec a bash shell in the puppet master container
@@ -84,21 +84,21 @@ See: [vagrant/README](vagrant/README.md)
   ```
   OR
   ```shell
-  docker exec -it server bash
+  docker-compose exec puppet server bash
   ```
 
 ### ENC (External Node Classifier)
 * Add node `agent-centos-3` to enc
   ```shell
-  docker exec -it server enc_adm --add --fqdn agent-centos-3.internal
+  docker-compose exec puppet server enc_adm --add --fqdn agent-centos-3.internal
   ```
 * Check enc contents
   ```shell
-  docker exec -it server enc_adm -l
+  docker-compose exec puppet server enc_adm -l
   ```
 1. Get more ENC help
   ```shell
-  docker exec -it server enc_adm --help
+  docker-compose exec puppet server enc_adm --help
   ```
 
 ### R10K Errors (ie: unable to sync repo to unresolvable ref)
