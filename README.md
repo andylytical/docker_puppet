@@ -157,8 +157,13 @@ docker-compose exec puppet bash -c 'rm -rf /etc/puppetlabs/code/* /var/cache/r10
   ```
 * Initialize ssh connection from container to the secure git server
   ```shell
-  docker-compose exec puppet ssh -T git-sec
-  # above will require manual login to bastion, proxy, etc.
+  # start a shell in the container
+  docker-compose exec puppet bash
+  # make initial connection to get-sec
+  # ...will require manual login to bastion, proxy, etc.
+  ssh -T git-sec
+  # exit the container
+  exit
   ```
 * Verify non-interactive login (re-uses the authenticated channel created above)
   ```shell
