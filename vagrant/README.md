@@ -26,6 +26,10 @@ Use command `vagrant box list` to see image status.
   * Note: Must also clean up the current cert on the puppet master:
    ```shell
    # from a bash shell in the puppet master container:
-   puppet cert clean agent-centos-2.internal
-   pkill -HUP -u puppet java
+   puppetserver ca clean --certname agent-centos-2.test.local
    ```
+* Remove all local Vagrant box images
+  ```shell
+  vagrant box list | cut -d' ' -f1 | sort -u | xargs -r -n1 -- vagrant box
+  remove --all
+  ```

@@ -99,8 +99,8 @@ do_enc() {
     # setup enc; if needed
     docker exec -it $SRVR enc_adm -l &>/dev/null || { 
         docker exec -it $SRVR enc_adm --init
-        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-1.internal
-        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-2.internal
+        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-1.test.local
+        docker exec -it $SRVR enc_adm --add --fqdn agent-centos-2.test.local
     }
     # configure node_terminus; if needed
     docker exec -it $SRVR puppet config print node_terminus --section master | grep -q -F exec || {
@@ -171,13 +171,13 @@ do_hard_cleanup() {
 
 ENDWHILE=0
 while [[ $# -gt 0 ]] && [[ $ENDWHILE -eq 0 ]] ; do
-  case $1 in
-    -h) usage; exit 0;;
-    --) ENDWHILE=1;;
-    -*) echo "Invalid option '$1'"; exit 1;;
-     *) ENDWHILE=1; break;;
-  esac
-  shift
+    case $1 in
+        -h) usage; exit 0;;
+        --) ENDWHILE=1;;
+        -*) echo "Invalid option '$1'"; exit 1;;
+         *) ENDWHILE=1; break;;
+    esac
+    shift
 done
 
 [[ $# -lt 1 ]] && {
