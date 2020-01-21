@@ -30,6 +30,5 @@ Use command `vagrant box list` to see image status.
    ```
 * Remove all local Vagrant box images
   ```shell
-  vagrant box list | cut -d' ' -f1 | sort -u | xargs -r -n1 -- vagrant box
-  remove --all
+  vagrant box list | cut -d' ' -f1 | sort -u | xargs -r -n1 -- vagrant box remove --all
   ```
