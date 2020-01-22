@@ -13,8 +13,8 @@ Use command `vagrant box list` to see image status.
 
 ### Run puppet agent on a test VM
 ```shell
-   vagrant up agent
-   vagrant ssh agent -c 'sudo /opt/puppetlabs/bin/puppet agent -t'
+vagrant up agent
+vagrant ssh agent -c 'sudo /opt/puppetlabs/bin/puppet agent -t'
 ```
 
 # Miscellaneous
