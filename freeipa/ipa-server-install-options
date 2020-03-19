@@ -1,0 +1,5 @@
+--admin-password=The-admin-password
+--debug
+--ds-password=The-directory-server-password
+--realm=TEST.LOCAL
+--unattended

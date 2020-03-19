@@ -10,7 +10,7 @@ vagrant destroy --force "${IMG}"
 
 vagrant up "${IMG}"
 
-ls "${FILE_NAME}" | xargs -r -- rm
+ls "${FILE_NAME}" 2>/dev/null | xargs -r -- rm
 
 vagrant package "${IMG}" --output "${FILE_NAME}"
 
