@@ -6,15 +6,12 @@ ARG CENTOS_VERSION
 FROM centos:${CENTOS_VERSION}
 
 ARG CENTOS_VERSION_MAJOR
-ARG DUMB_INIT_VERSION
-ARG PUPPET_AGENT_CERTNAME
-ARG PUPPET_VERSION
-ARG PUPPET_VERSION_MAJOR
+ARG PUPPETAGENT_CERTNAME
+ARG PUPPETAGENT_VERSION_MAJOR
 
 # Install puppet yum repo and puppet agent yum pkgs
-ENV PUPPET_AGENT_VERSION ${PUPPET_VERSION}
-RUN rpm -Uvh https://yum.puppetlabs.com/puppet${PUPPET_VERSION_MAJOR}-release-el-${CENTOS_VERSION_MAJOR}.noarch.rpm && \
-    yum install -y puppet-agent-"$PUPPET_AGENT_VERSION" && \
+RUN rpm -Uvh https://yum.puppetlabs.com/puppet${PUPPETAGENT_VERSION_MAJOR}-release-el-${CENTOS_VERSION_MAJOR}.noarch.rpm && \
+    yum install -y puppet-agent && \
     yum clean all
 ENV PATH /opt/puppetlabs/server/bin:/opt/puppetlabs/puppet/bin:/opt/puppetlabs/bin:$PATH
 
@@ -35,21 +32,4 @@ STOPSIGNAL SIGRTMIN+3
 RUN yum install -y lvm2 && \
     yum clean all
 
-# Install netcat (for network dependency checking in entrypoint)
-RUN yum install -y nmap-ncat && \
-    yum clean all
-
-
-## Install dumb-init for better signal handling
-#ADD https://github.com/Yelp/dumb-init/releases/download/v"${DUMB_INIT_VERSION}"/dumb-init_"${DUMB_INIT_VERSION}"_amd64 /usr/sbin/dumb-init
-#RUN chmod +x /usr/sbin/dumb-init
-
-# Copy entrypoint
-ENV PUPPET_AGENT_CERTNAME $PUPPET_AGENT_CERTNAME
-COPY entrypoint.sh /usr/sbin/entrypoint
-RUN chmod +x /usr/sbin/entrypoint
-
-#ENTRYPOINT ["dumb-init", "--", "entrypoint"]
-#ENTRYPOINT ["init", "--", "entrypoint"]
 ENTRYPOINT ["init"]
-#CMD ["sleep", "infinity"]

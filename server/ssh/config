@@ -1,0 +1,20 @@
+Host cerberus
+    Hostname cerberus4.ncsa.illinois.edu
+    User aloftus
+Host bastion
+    Hostname lsst-bastion01.ncsa.illinois.edu
+    User aloftus
+    ProxyJump cerberus
+Host git-sec
+    Hostname lsst-git.ncsa.illinois.edu
+    User git
+    PreferredAuthentications publickey
+    IdentityFile /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
+    ForwardX11 no
+    ProxyJump bastion
+Host *
+ServerAliveInterval 60
+ServerAliveCountMax 3
+ControlMaster auto
+ControlPath ~/%l-%r@%h:%p
+ControlPersist 2d

@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  puppet:
+    volumes:
+      - puppetserver-local:/etc/puppetlabs/local/
+      - puppetserver-r10k:/etc/puppetlabs/r10k/
+volumes:
+  puppetserver-local:
+  puppetserver-r10k:

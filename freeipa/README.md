@@ -1,10 +1,13 @@
 # FreeIPA
 
-FreeIPA server will be installed automatically upon running `doit.sh start`
+NOTE - UNTESTED / UNSUPPORTED - Needs verification since #3 (19Mar2020)
+
+## Enable freeipa
+- Add `docker-compose.freeipa.yml` to `COMPOSE_FILE` (in `.env`)
 
 ## Start FreeIPA by itself
 ```shell
-./doit.sh start freeipa
+docker-compose up -d freeipa
 ```
 
 ## Watch freeipa logs

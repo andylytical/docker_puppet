@@ -1,0 +1,22 @@
+---
+cachedir: "/etc/puppetlabs/r10k/cache"
+deploy:
+  purge_levels:
+    - environment
+  purge_whitelist:
+    - hieradata
+postrun:
+  - /etc/puppetlabs/local/r10k/postrun.sh
+sources:
+  control:
+    remote: https://github.com/lsst-it/lsst-itconf.git
+    basedir: /etc/puppetlabs/code/environments
+    invalid_branches: correct
+    ignore_branch_prefixes:
+      - master
+  private-hiera:
+    remote: git@lsst-git.ncsa.illinois.edu:lsst-it/hiera-ncsa-private.git
+    basedir: /etc/puppetlabs/code/hieradata/private
+    invalid_branches: correct
+    ignore_branch_prefixes:
+      - master

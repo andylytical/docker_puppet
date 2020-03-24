@@ -5,6 +5,10 @@ Nodes:
             - TEXT
             - PRIMARY KEY
             - NOT NULL
+        environment:
+            - TEXT
+            - NOT NULL
+            - DEFAULT "production"
         site:
             - TEXT
             - NOT NULL
@@ -17,7 +21,7 @@ Nodes:
             - TEXT
             - NOT NULL
             - DEFAULT "default"
-        environment:
+        org:
             - TEXT
             - NOT NULL
-            - DEFAULT "production"
+            - DEFAULT "default"

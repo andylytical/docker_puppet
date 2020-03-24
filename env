@@ -1,0 +1,17 @@
+# Compose settings
+COMPOSE_FILE=docker-compose.yml:docker-compose.shared.yml
+
+# Puppet general
+DOMAIN=test.local
+PUPPERWARE_ANALYTICS_ENABLED=false
+
+# Puppet server specific
+DNS_ALT_NAMES=10.0.2.2
+
+# Puppet agent specific
+CENTOS_VERSION=7.6.1810
+CENTOS_VERSION_MAJOR=7
+PUPPETAGENT_VERSION_MAJOR=5
+
+# FreeIPA server specific
+#IPA_SERVER_HOSTNAME=fipa
