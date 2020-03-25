@@ -10,9 +10,8 @@ docker-compose exec puppet mkdir /etc/puppetlabs/r10k/ssh/
   ```
 - For local testing:
   ```shell
-  docker cp ~/.ssh/id_ed25519
-  pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
-
+  docker cp ~/.ssh/id_ed25519 pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
+  docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
   ```
 
 ### Install public portion of deploy key on the git server
@@ -29,12 +28,18 @@ docker-compose exec puppet mkdir /etc/puppetlabs/r10k/ssh/
   repo(s) on the private git server
 - Refer to your specific git server documentation for how to do this
 
-### Install ssh config 
-- Adjust settings in `server/ssh/config` as appropriate for you setup
+### Install ssh
+```shell
+docker cp server/ssh/install.sh pupperware_puppet_1:/install_ssh.sh
+docker-compose exec puppet /install_ssh.sh
+```
+
+### Configure ssh
+- Adjust settings in `server/ssh/config` as appropriate for your setup
 - Copy ssh config into container
   ```shell
   docker cp server/ssh/config pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/config
-  docker-compose exec puppet chmod root:root /etc/puppetlabs/r10k/ssh/config
+  docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/config
   docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
   ```
 
