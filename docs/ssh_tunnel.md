@@ -62,7 +62,7 @@ docker-compose exec puppet ssh -T git-sec
 ```
 Note: If password prompts continue, might have to login directly to each host
 in the path.  Check for files (inside the container), should have one per host:
-`/root/puppet.internal-<USER>@<HOST>:22=`
+`/root/puppet.test.local-<USER>@<HOST>:22=`
 
 ### Verify R10K has access to all repos defined in r10k.yaml
 ```shell

@@ -29,7 +29,7 @@ VOLUME [ "/sys/fs/cgroup" ]
 STOPSIGNAL SIGRTMIN+3
 
 # Install additional packages for puppet module dependencies
-RUN yum install -y lvm2 && \
+RUN yum install -y lvm2 which && \
     yum clean all
 
 ENTRYPOINT ["init"]

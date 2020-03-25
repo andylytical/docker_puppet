@@ -9,8 +9,8 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
 }
 
 # make custom r10k runner (in the container)
-docker cp server/r10k/install.sh pupperware_puppet_1:/r10k_install.sh
-docker-compose exec puppet bash /r10k_install.sh
+docker cp server/r10k/install.sh pupperware_puppet_1:/install_r10k.sh
+docker-compose exec puppet bash -c '/install_r10k.sh |tee /install_r10k.log'
 
 # configure r10k
 docker cp server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k.yaml
@@ -22,9 +22,8 @@ sed -i -e '/puppetserver/ d' bin/r10k
 >>bin/r10k echo "date; time docker-compose exec puppet /r10k \"\$@\""
 >>bin/r10k echo "date"
 
-# make verify repos script
+# install custom verify script
+docker cp server/r10k/verify_repo_access.sh pupperware_puppet_1:/verify_repo_access.sh
+docker-compose exec puppet chmod +x /verify_repo_access.sh
 /usr/bin/cp -f bin/puppetserver bin/verify_repo_access
-sed -i -e '/puppetserver/ d' bin/verify_repo_access
->>bin/verify_repo_access echo -n "docker-compose exec puppet bash -c '"
->>bin/verify_repo_access echo -n 'awk "\$1==\"remote:\"{print \$NF}" /etc/puppetlabs/r10k/r10k.yaml | xargs -n1 git ls-remote'
->>bin/verify_repo_access echo "'"
+sed -i -e 's/puppetserver/\/verify_repo_access.sh/' bin/verify_repo_access

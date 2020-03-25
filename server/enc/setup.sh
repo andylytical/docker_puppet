@@ -9,8 +9,11 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
 }
 
 # install enc
-docker cp server/enc/install.sh pupperware_puppet_1:/enc_install.sh
-docker-compose exec puppet bash /enc_install.sh
+docker cp server/enc/install.sh pupperware_puppet_1:/install_enc.sh
+docker-compose exec puppet bash -c "/install_enc.sh |tee install_enc.log"
+
+# restart puppetserver to re-read config
+docker-compose exec puppet pkill -HUP -u puppet java
 
 # initialize enc database
 docker cp server/enc/tables.yaml pupperware_puppet_1:/etc/puppetlabs/local/enc/

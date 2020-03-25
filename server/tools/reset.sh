@@ -21,4 +21,4 @@ cd "$PDIR" \
 && export QS_REPO=https://github.com/andylytical/docker_puppet \
 && curl $QS_URL | bash \
 && cd "$PDIR" \
-&& docker-compose up -d \
+&& docker-compose up -d

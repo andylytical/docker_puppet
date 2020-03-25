@@ -1,0 +1,8 @@
+
+# PUPPET AGENT SPECIFIC
+# Ensure "centos_version" is a valid tag from: https://hub.docker.com/_/centos
+CENTOS_VERSION=7.7.1909
+# copy the major version from above
+CENTOS_VERSION_MAJOR=7
+# what puppet agent version to install (prolly either 5 or 6)
+PUPPETAGENT_VERSION_MAJOR=5
