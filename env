@@ -2,14 +2,21 @@
 COMPOSE_FILE=docker-compose.yml:docker-compose.shared.yml
 
 # Puppet general
+### Add here the domain name from FQDN hostname
 DOMAIN=test.local
 PUPPERWARE_ANALYTICS_ENABLED=false
 
 # Puppet server specific
+### comma separated list of all hostnames and IPs clients will use to reach this
+### puppet master
+### Don't need to include FQDN hostname here (the one that was used in DOMAIN)
+### 10.0.2.2 is needed only for puppet agent in a Vagrant VM
 DNS_ALT_NAMES=10.0.2.2
 
 # Puppet agent specific
-CENTOS_VERSION=7.6.1810
+### Centos Version must be a valid tag from:
+### https://hub.docker.com/_/centos
+CENTOS_VERSION=7.7.1908
 CENTOS_VERSION_MAJOR=7
 PUPPETAGENT_VERSION_MAJOR=5
 
