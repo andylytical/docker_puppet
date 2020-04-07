@@ -1,7 +1,7 @@
 # docker_puppet
 
 ### Requirements
-- [docker](https://www.docker.com/products/docker-desktop)
+- [docker](https://docs.docker.com/install/)
 - [docker-compose](https://docs.docker.com/compose/install/)
 - [pupperware](https://github.com/puppetlabs/pupperware)
 
@@ -28,18 +28,27 @@ directory.
   - `docker-compose ps`
 
 ### Configure ENC
-- Review [server/enc/tables.yaml](server/enc/tables.yaml)
-- `server/enc/setup.sh`
+- Review enc table layout
+  - `vim server/enc/tables.yaml`
+    - Note: for more about enc: [ncsa/puppetserver-local](https://github.com/ncsa/puppetserver-local)
+- Install enc in the container
+  - `server/enc/setup.sh`
 - Verify enc setup
   - `bin/enc_adm -l`
   - `bin/enc_adm --help`
 
 ### Configure R10K
-- Review [server/r10k/r10k.yaml](server/r10k/r10k.yaml)
-- `server/r10k/setup.sh`
-- `bin/verify_repo_access`
+- Review r10k configuration
+  - `vim server/r10k/r10k.yaml`
+- Apply r10k config in the container
+  - `server/r10k/setup.sh`
+- Verify r10k can access all the repos in it's config
+  - `bin/verify_repo_access`
   - Resolve any errors before proceeding
-- `bin/r10k`
+    - See also:
+      [Non-interactive access to a private git server (behind a firewall)](https://github.com/andylytical/docker_puppet/blob/master/docs/ssh_tunnel.md)
+- Run R10K
+  - `bin/r10k`
 
 
 # Other Actions

@@ -17,5 +17,5 @@ docker cp server/enc/tables.yaml pupperware_puppet_1:/etc/puppetlabs/local/enc/
 docker-compose exec puppet enc_adm --init
 
 # make enc_adm runner script
-cp bin/puppetserver bin/enc_adm
+/usr/bin/cp -f bin/puppetserver bin/enc_adm
 sed -i -e 's/puppetserver/enc_adm/' bin/enc_adm
