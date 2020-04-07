@@ -54,7 +54,6 @@ directory.
 # Other Actions
 
 - [Add nodes to the ENC](docs/enc.md)
-- [Puppet agent in docker](agent/README.md)
 - [Puppet agent in Vagrant VM](vagrant/README.md)
 - [Non-interactive access to a private git server (behind a firewall)](docs/ssh_tunnel.md)
 - [Extras](docs/extras.md)

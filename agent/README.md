@@ -1,5 +1,7 @@
 # Puppet Agent in Docker
 
+NOTE: UNTESTED - Does this even make sense to spend time on?
+
 Assumptions:
 - Running only ONE agent container
 - Using CentOS agent
