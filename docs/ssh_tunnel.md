@@ -3,7 +3,6 @@
 ### Create an ssh key to use as a deploy key
 ```shell
 docker-compose exec puppet mkdir /etc/puppetlabs/r10k/ssh/
-docker-compose exec puppet bash -c 'apt update && apt install -y ssh && apt clean && rm -rf /var/lib/apt/lists/*'
 ```
 - For production use-case:
   - Create an ssh key for deployment
