@@ -9,12 +9,12 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
 }
 
 # make enc_adm runner script
-/usr/bin/cp -f bin/puppetserver bin/enc_adm
+/bin/cp -f bin/puppetserver bin/enc_adm
 sed -i -e 's/puppetserver/enc_adm/' bin/enc_adm
 
 # make puppetserver reload script
-/usr/bin/cp -f bin/puppetserver bin/hup
-sed -i -e '/puppetserver/ d' bin/enc_adm
+/bin/cp -f bin/puppetserver bin/hup
+sed -i -e '/puppetserver/ d' bin/hup
 >>bin/hup echo "docker-compose exec puppet pkill -HUP -u puppet java"
 ln -sf hup bin/reload
 
