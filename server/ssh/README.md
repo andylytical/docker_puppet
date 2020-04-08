@@ -37,6 +37,9 @@ docker-compose exec puppet /install_ssh.sh
 
 ### Configure ssh
 - Adjust settings in `server/ssh/config` as appropriate for your setup
+  ```shell
+  vim server/ssh/config
+  ```
 - Copy ssh config into container
   ```shell
   docker cp server/ssh/config pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/config

@@ -46,7 +46,7 @@ directory.
   - `bin/verify_repo_access`
   - Resolve any errors before proceeding
     - See also:
-      [Non-interactive access to a private git server (behind a firewall)](https://github.com/andylytical/docker_puppet/blob/master/docs/ssh_tunnel.md)
+      [Non-interactive access to a private git server (behind a firewall)](server/ssh/README.md)
 - Run R10K
   - `bin/r10k`
 
@@ -55,5 +55,5 @@ directory.
 
 - [Add nodes to the ENC](docs/enc.md)
 - [Puppet agent in Vagrant VM](vagrant/README.md)
-- [Non-interactive access to a private git server (behind a firewall)](docs/ssh_tunnel.md)
+- [Non-interactive access to a private git server (behind a firewall)](server/ssh/README.md)
 - [Extras](docs/extras.md)
