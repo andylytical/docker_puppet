@@ -1,35 +1,30 @@
 # Secure access to a private git server
+These steps are needed to access a git repo on a server that is behind a firewall. The general process is:
+- Create a persistent ssh tunnel for access to the git server
+- Setup an ssh key for access to the repo (on the git server)
+
+NOTE: In the commands below, replace the source file `~/.ssh/$(hostname)-r10k` with the actual path
+to the ssh key file(s) on the local host.
 
 ### First time only - create a new ssh key pair (if needed)
 For production use, suggest a separate key per puppet master.
-- Create ssh key to use as a deploy key
 ```shell
 ssh-keygen -t ed25519 -f ~/.ssh/$(hostname)-r10k
 ```
 
 ### Install private portion of deploy key in the container
-- Create the target dir in the container
 ```shell
 docker-compose exec puppet mkdir /etc/puppetlabs/r10k/ssh/
+docker cp ~/.ssh/$(hostname)-r10k pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
+docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
 ```
-- Copy the private key file into the container
-  ```shell
-  docker cp ~/.ssh/$(hostname)-r10k pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
-  docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
-  ```
-  NOTE: replace the source file `~..ssh/$(hostname)-r10k` with the actual path
-  to the private key file on the local host.
+
 
 ### Install public portion of deploy key on the git server
 - Get public key contents
-  - For production use-case:
-    ```shell
-    docker-compose exec puppet cat /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key.pub
-    ```
-  - For local testing:
-    ```shell
-    cat ~/.ssh/id_ed25519.pub
-    ```
+```shell
+cat ~/.ssh/$(hostname)-r10k.pub
+```
 - Install the public key contents (from above cmd) as a deploy key for the
   repo(s) on the private git server
 - Refer to your specific git server documentation for how to do this
