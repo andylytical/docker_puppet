@@ -39,28 +39,24 @@
 #####
 
 defaults:
-    box: centos-custom
+    box: bento/centos-7
     memory: 512
 
 common:
-    env: {}
+    env:
+        PUP_INSTALL_BASEPATH: /vagrant
+        PUP_INSTALL_OS_NAME: el
+        PUP_INSTALL_OS_VER: 7
+        PUP_INSTALL_VERBOSE: 1
+        PUP_INSTALL_DEBUG: 1
+        PUP_INSTALL_VERSION: 5
+        PUP_MASTER: 10.0.2.2
     shell_always: []
-    shell_once: []
+    shell_once:
+      - cmd: /vagrant/centos_post.sh
+      - cmd: /vagrant/install_agent.sh
 
 guests:
     agent:
         hostname: agent-centos-2.test.local
         ip: 192.168.2.100
-    newimage:
-        box: bento/centos-7
-        env:
-            PUP_INSTALL_BASEPATH: /vagrant
-            PUP_INSTALL_OS_NAME: el
-            PUP_INSTALL_OS_VER: 7
-            PUP_INSTALL_VERBOSE: 1
-            PUP_INSTALL_DEBUG: 1
-            PUP_INSTALL_VERSION: 5
-            PUP_MASTER: 10.0.2.2
-        shell_once:
-          - cmd: /vagrant/centos_post.sh
-          - cmd: /vagrant/install_agent.sh

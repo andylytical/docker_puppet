@@ -9,11 +9,11 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
 }
 
 # make custom r10k runner (in the container)
-docker cp server/r10k/install.sh pupperware_puppet_1:/install_r10k.sh
+docker cp -L server/r10k/install.sh pupperware_puppet_1:/install_r10k.sh
 docker-compose exec puppet bash -c '/install_r10k.sh |tee /install_r10k.log'
 
 # configure r10k
-docker cp server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k.yaml
+docker cp -L server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k.yaml
 
 # make r10k runner script (outside docker)
 /bin/cp -f bin/puppetserver bin/r10k
@@ -23,7 +23,7 @@ sed -i -e '/puppetserver/ d' bin/r10k
 >>bin/r10k echo "date"
 
 # install custom verify script
-docker cp server/r10k/verify_repo_access.sh pupperware_puppet_1:/verify_repo_access.sh
+docker cp -L server/r10k/verify_repo_access.sh pupperware_puppet_1:/verify_repo_access.sh
 docker-compose exec puppet chmod +x /verify_repo_access.sh
 /bin/cp -f bin/puppetserver bin/verify_repo_access
 sed -i -e 's/puppetserver/\/verify_repo_access.sh/' bin/verify_repo_access

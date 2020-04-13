@@ -1,37 +1,33 @@
-# Secure access to a private git server
+# Setup Secure Access To A Private Git Server
 These steps are needed to access a git repo on a server that is behind a firewall. The general process is:
-- Create a persistent ssh tunnel for access to the git server
 - Setup an ssh key for access to the repo (on the git server)
+- Create a persistent ssh tunnel for access to the git server
 
-NOTE: In the commands below, replace the source file `~/.ssh/$(hostname)-r10k` with the actual path
-to the ssh key file(s) on the local host.
+### SSH deploy key
+Note:
+- Must have a deploy key setup on the private git server.
+- For production use, suggest a separate key per puppet master.
+- These instructions assume an appropriate deploy key has already been created
+  and installed on the private git server.
 
-### First time only - create a new ssh key pair (if needed)
-For production use, suggest a separate key per puppet master.
+Setup session environment variables for the appropriate ssh deploy key.
+Adjust the path here to point to the private ssh key to use.
 ```shell
-ssh-keygen -t ed25519 -f ~/.ssh/$(hostname)-r10k
+export DEPLOYKEY=~/.ssh/r10k.deploy.key
 ```
+Commands below will use this session environment variable.
+
 
 ### Install private portion of deploy key in the container
 ```shell
 docker-compose exec puppet mkdir /etc/puppetlabs/r10k/ssh/
-docker cp ~/.ssh/$(hostname)-r10k pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
+docker cp -L "$DEPLOYKEY" pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
 docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/private-hiera-deploy-key
 ```
 
-
-### Install public portion of deploy key on the git server
-- Get public key contents
-```shell
-cat ~/.ssh/$(hostname)-r10k.pub
-```
-- Install the public key contents (from above cmd) as a deploy key for the
-  repo(s) on the private git server
-- Refer to your specific git server documentation for how to do this
-
 ### Install ssh in the container
 ```shell
-docker cp server/ssh/install.sh pupperware_puppet_1:/install_ssh.sh
+docker cp -L server/ssh/install.sh pupperware_puppet_1:/install_ssh.sh
 docker-compose exec puppet /install_ssh.sh
 ```
 
@@ -42,7 +38,7 @@ docker-compose exec puppet /install_ssh.sh
   ```
 - Copy ssh config into container
   ```shell
-  docker cp server/ssh/config pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/config
+  docker cp -L server/ssh/config pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/config
   docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/config
   docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
   ```
