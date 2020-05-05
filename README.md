@@ -59,6 +59,9 @@ directory.
       [Non-interactive access to a private git server (behind a firewall)](server/ssh/README.md)
 - Run R10K
   - `bin/r10k`
+  - No output means successful run. In the case of errors, view latest log file
+    with:
+    - `bin/r10k_log`
 
 ---
 
