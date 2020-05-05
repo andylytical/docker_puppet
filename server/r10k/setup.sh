@@ -8,21 +8,33 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
     exit 1
 }
 
-# make custom r10k runner (in the container)
+# custom r10k runner inside the container
 docker cp -L server/r10k/install.sh pupperware_puppet_1:/install_r10k.sh
 docker-compose exec puppet bash -c '/install_r10k.sh |tee /install_r10k.log'
 
 # configure r10k
 docker cp -L server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k.yaml
 
-# make r10k runner script (outside docker)
-/bin/cp -f bin/puppetserver bin/r10k
-#sed -i -e 's/puppetserver/\/r10k/' bin/r10k
-sed -i -e '/puppetserver/ d' bin/r10k
->>bin/r10k echo "date; time docker-compose exec puppet /r10k \"\$@\""
->>bin/r10k echo "date"
+# r10k runner script outside the container
+tgt=bin/r10k
+/bin/cp -f bin/puppetserver $tgt
+sed -i -e '/puppetserver/ d' $tgt
+>>$tgt echo "date; time docker-compose exec puppet /r10k \"\$@\""
+>>$tgt echo "date"
 
-# install custom verify script
+# Log viewer for r10k
+tgt=bin/r10k_log
+/bin/cp -f bin/puppetserver $tgt
+sed -i -e '/puppetserver/ d' $tgt
+>>$tgt cat <<ENDHERE
+tmpfn=\$(mktemp)
+>\$tmpfn docker-compose exec puppet bash -c 'cat /var/log/r10k/\$(ls /var/log/r10k | tail -1)'
+less \$tmpfn
+rm \$tmpfn
+ENDHERE
+
+
+# Verify r10k repo access
 docker cp -L server/r10k/verify_repo_access.sh pupperware_puppet_1:/verify_repo_access.sh
 docker-compose exec puppet chmod +x /verify_repo_access.sh
 /bin/cp -f bin/puppetserver bin/verify_repo_access

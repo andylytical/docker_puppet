@@ -17,6 +17,7 @@ export DEPLOYKEY=~/.ssh/r10k.deploy.key
 ```
 Commands below will use this session environment variable.
 
+---
 
 ### Install private portion of deploy key in the container
 ```shell
@@ -43,6 +44,8 @@ docker-compose exec puppet /install_ssh.sh
   docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
   ```
 
+---
+
 ### Initialize ssh connection from container to the secure git server
 ```shell
 # start a shell in the container
@@ -53,6 +56,8 @@ ssh -T git-sec
 # exit the container
 exit
 ```
+
+---
 
 ### Verify non-interactive access (re-uses the authenticated channel created above)
 ```shell

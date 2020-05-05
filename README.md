@@ -7,12 +7,16 @@
 
 # Quickstart
 
+---
+
 ### Get pupperware
 - `git clone https://github.com/puppetlabs/pupperware`
 - `cd pupperware`
 
 Note: All commands below are expected to be run from inside the pupperware
 directory.
+
+---
 
 ### Install customizations from this repo
 - `export QS_REPO=https://github.com/andylytical/docker_puppet`
@@ -22,10 +26,14 @@ directory.
 ### Review .env settings
 - `vim .env`
 
+---
+
 ### Start puppetserver
 - `docker-compose up -d`
 - Ensure all containers are started and healthy
   - `docker-compose ps`
+
+---
 
 ### Configure ENC
 - Review enc table layout
@@ -36,6 +44,8 @@ directory.
 - Verify enc setup
   - `bin/enc_adm -l`
   - `bin/enc_adm --help`
+
+---
 
 ### Configure R10K
 - Review r10k configuration
@@ -50,6 +60,7 @@ directory.
 - Run R10K
   - `bin/r10k`
 
+---
 
 # Other Actions
 
