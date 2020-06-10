@@ -71,3 +71,5 @@ directory.
 - [Puppet agent in Vagrant VM](vagrant/README.md)
 - [Non-interactive access to a private git server (behind a firewall)](server/ssh/README.md)
 - [Extras](docs/extras.md)
+- Add pupperware/bin to PATH:
+  - `server/bashrc/setup.sh`

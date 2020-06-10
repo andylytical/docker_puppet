@@ -1,0 +1,3 @@
+
+# INCLUDE bashrc.d
+[[ -d /root/.bashrc.d ]] && for f in /root/.bashrc.d/*.sh ; do source "$f" ; done
