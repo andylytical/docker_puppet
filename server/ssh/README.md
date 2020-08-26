@@ -9,6 +9,9 @@ Note:
 - For production use, suggest a separate key per puppet master.
 - These instructions assume an appropriate deploy key has already been created
   and installed on the private git server.
+  - For additional help, see:
+    - [GitHub](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
+    - [GitLab](https://docs.gitlab.com/ce/ssh/README.html)
 
 Setup session environment variables for the appropriate ssh deploy key.
 Adjust the path here to point to the private ssh key to use.
