@@ -1,9 +1,9 @@
 # docker_puppet
 
 ### Requirements
+Install each of the dependencies below:
 - [docker](https://docs.docker.com/install/)
 - [docker-compose](https://docs.docker.com/compose/install/)
-- [pupperware](https://github.com/puppetlabs/pupperware)
 
 # Quickstart
 
@@ -31,7 +31,18 @@ directory.
 ### Start puppetserver
 - `docker-compose up -d`
 - Ensure all containers are started and healthy
-  - `docker-compose ps`
+  - `watch -n5 "docker-compose ps"`
+    - Press Ctl-c to exit "watch" when all containers are healthy
+
+Sample output when all containers are started and healthy:
+```
+       Name                       Command                  State               Ports
+------------------------------------------------------------------------------------------------
+pupperware_postgres_1   docker-entrypoint.sh postgres    Up (healthy)   5432/tcp
+pupperware_puppet_1     dumb-init /docker-entrypoi ...   Up (healthy)   0.0.0.0:8140->8140/tcp
+pupperware_puppetdb_1   dumb-init /docker-entrypoi ...   Up (healthy)   0.0.0.0:32779->8080/tcp,
+                                                                        0.0.0.0:32778->8081/tcp
+```
 
 ---
 
