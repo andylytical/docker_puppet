@@ -1,7 +1,6 @@
 #!/bin/bash
  
 PYTHON_PKGS=( python3 python3-venv )
-#OTHER_PKGS=( ssh less vim )
  
 # Install dependencies
 apt update \
@@ -10,6 +9,6 @@ apt update \
 && rm -rf /var/lib/apt/lists/*
  
 # Setup custom ENC
-PUP_CUSTOM_DIR=/etc/puppetlabs/local
-git clone https://github.com/ncsa/puppetserver-local.git --depth=1 $PUP_CUSTOM_DIR \
-&& $PUP_CUSTOM_DIR/configure.sh
+PUP_ENC_DIR=/etc/puppetlabs/enc
+git clone https://github.com/ncsa/puppetserver-enc.git --depth=1 $PUP_ENC_DIR \
+&& $PUP_ENC_DIR/setup.sh

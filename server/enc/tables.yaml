@@ -1,27 +1,19 @@
 Nodes:
-    table_name: Nodes
-    columns:
-        fqdn:
-            - TEXT
-            - PRIMARY KEY
-            - NOT NULL
-        environment:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "production"
-        site:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
-        cluster:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
-        role:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
-        org:
-            - TEXT
-            - NOT NULL
-            - DEFAULT "default"
+  table_name: Nodes
+  columns:
+    fqdn:
+      - TEXT
+      - PRIMARY KEY
+      - NOT NULL
+    environment:
+      - TEXT
+      - NOT NULL
+      - DEFAULT "production"
+    role:
+      - TEXT
+      - NOT NULL
+      - DEFAULT "default"
+    site:
+      - TEXT
+      - NOT NULL
+      - DEFAULT "default"

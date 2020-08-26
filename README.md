@@ -38,7 +38,7 @@ directory.
 ### Configure ENC
 - Review enc table layout
   - `vim server/enc/tables.yaml`
-    - Note: for more about enc: [ncsa/puppetserver-local](https://github.com/ncsa/puppetserver-local)
+    - Note: for more about enc: [ncsa/puppetserver-enc](https://github.com/ncsa/puppetserver-enc)
 - Install enc in the container
   - `server/enc/setup.sh`
 - Verify enc setup

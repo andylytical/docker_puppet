@@ -24,5 +24,5 @@ docker-compose exec puppet bash -c "/install_enc.sh |tee install_enc.log"
 bin/hup
 
 # initialize enc database
-docker cp -L server/enc/tables.yaml pupperware_puppet_1:/etc/puppetlabs/local/enc/
+docker cp -L server/enc/tables.yaml pupperware_puppet_1:/etc/puppetlabs/enc/
 bin/enc_adm --init
