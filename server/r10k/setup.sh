@@ -11,6 +11,7 @@ cd "${PUPPERWARE:-$DEFAULT}" || {
 # custom r10k runner inside the container
 docker cp -L server/r10k/install.sh pupperware_puppet_1:/install_r10k.sh
 docker-compose exec puppet bash -c '/install_r10k.sh |tee /install_r10k.log'
+docker-compose exec puppet bash -c 'ln -s /etc/puppetlabs/r10k/r10k.sh /r10k'
 
 # configure r10k
 docker cp -L server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k.yaml

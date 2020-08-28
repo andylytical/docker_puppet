@@ -49,12 +49,13 @@ pupperware_puppetdb_1   dumb-init /docker-entrypoi ...   Up (healthy)   0.0.0.0:
 ### Configure ENC
 - Review enc table layout
   - `vim server/enc/tables.yaml`
-    - Note: for more about enc: [ncsa/puppetserver-enc](https://github.com/ncsa/puppetserver-enc)
 - Install enc in the container
   - `server/enc/setup.sh`
 - Verify enc setup
   - `bin/enc_adm -l`
   - `bin/enc_adm --help`
+
+See also: [ncsa/puppetserver-enc](https://github.com/ncsa/puppetserver-enc)
 
 ---
 
