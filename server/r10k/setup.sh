@@ -20,7 +20,8 @@ docker cp -L server/r10k/r10k.yaml pupperware_puppet_1:/etc/puppetlabs/r10k/r10k
 tgt=bin/r10k
 /bin/cp -f bin/puppetserver $tgt
 sed -i -e '/puppetserver/ d' $tgt
->>$tgt echo "date; time docker-compose exec puppet /r10k \"\$@\""
+>>$tgt echo "date"
+>>$tgt echo "time -f 'Elapsed Time: %e (seconds)' docker-compose exec puppet /r10k \"\$@\""
 >>$tgt echo "date"
 
 # Log viewer for r10k

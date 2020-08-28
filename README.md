@@ -31,7 +31,7 @@ directory.
 ### Start puppetserver
 - `docker-compose up -d`
 - Ensure all containers are started and healthy
-  - `watch -n5 "docker-compose ps"`
+  - `watch "docker-compose ps"`
     - Press Ctl-c to exit "watch" when all containers are healthy
 
 Sample output when all containers are started and healthy:
