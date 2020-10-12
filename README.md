@@ -64,6 +64,8 @@ See also: [ncsa/puppetserver-enc](https://github.com/ncsa/puppetserver-enc)
 ### Configure R10K
 - Review r10k configuration
   - `vim server/r10k/r10k.yaml`
+- Review r10k wrapper configuration
+  - `vim server/r10k/config.ini`
 - Apply r10k config in the container
   - `server/r10k/setup.sh`
 - Verify r10k can access all the repos in it's config
