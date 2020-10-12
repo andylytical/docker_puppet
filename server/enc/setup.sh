@@ -25,4 +25,5 @@ bin/hup
 
 # initialize enc database
 docker cp -L server/enc/tables.yaml pupperware_puppet_1:/etc/puppetlabs/enc/
+docker cp -L server/enc/config.ini pupperware_puppet_1:/etc/puppetlabs/enc/
 bin/enc_adm --init
