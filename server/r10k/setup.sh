@@ -24,6 +24,7 @@ sed -i -e '/puppetserver/ d' $tgt
 >>$tgt echo 'echo "R10K Start $(date)"'
 >>$tgt echo "docker-compose exec puppet /r10k \"\$@\""
 >>$tgt echo 'echo'
+>>$tgt echo 'echo "R10K End $(date)"'
 >>$tgt echo 'echo "ELAPSED: $SECONDS (seconds)"'
 
 # Log viewer for r10k
