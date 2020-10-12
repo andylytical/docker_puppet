@@ -130,10 +130,18 @@ install_puppet() {
 agent_config() {
     log "enter..."
     [[ "$DEBUG" -gt 0 ]] && set -x
+    # set server
     $PUPPET config set --section agent server "$AGENT_PUPMASTER"
+    # set certname (if provided)
     if [[ -n "$AGENT_CERTNAME" ]] ; then
         $PUPPET config set certname "$AGENT_CERTNAME"
     fi
+    # get full ca from puppet master
+    localcacert="$(puppet agent --configprint localcacert)"
+    ca_url="https://$AGENT_PUPMASTER:8140/puppet-ca/v1/certificate/ca"
+    curl -k "$ca_url" > "$localcacert"
+    # set CRL checking type
+    $PUPPET config set --section main certificate_revocation leaf
 }
 
 
