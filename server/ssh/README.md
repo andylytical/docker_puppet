@@ -44,6 +44,7 @@ docker-compose exec puppet /install_ssh.sh
   ```shell
   docker cp -L server/ssh/config pupperware_puppet_1:/etc/puppetlabs/r10k/ssh/config
   docker-compose exec puppet chown root:root /etc/puppetlabs/r10k/ssh/config
+  docker-compose exec puppet rm -rf /root/.ssh
   docker-compose exec puppet ln -s /etc/puppetlabs/r10k/ssh /root/.ssh
   ```
 
