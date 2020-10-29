@@ -9,6 +9,6 @@ apt update \
 && rm -rf /var/lib/apt/lists/*
  
 # Setup custom ENC
-PUP_ENC_DIR=/etc/puppetlabs/enc
-git clone https://github.com/ncsa/puppetserver-enc.git --depth=1 $PUP_ENC_DIR \
-&& $PUP_ENC_DIR/setup.sh
+export QS_REPO=https://github.com/ncsa/puppetserver-enc.git
+#export QS_GIT_BRANCH=better_setup_script
+curl https://raw.githubusercontent.com/andylytical/quickstart/master/quickstart.sh | bash
