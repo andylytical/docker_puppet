@@ -81,6 +81,16 @@ See also: [ncsa/puppetserver-enc](https://github.com/ncsa/puppetserver-enc)
 
 ---
 
+### Install Extras
+For production systems at NCSA, these are extra steps that are needed on the
+puppetserver.
+
+- `server/extras/setup.sh`
+
+See also: (extras/README.md)
+
+---
+
 # Other Actions
 
 - [Add nodes to the ENC](docs/enc.md)
