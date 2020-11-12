@@ -87,7 +87,7 @@ puppetserver.
 
 - `server/extras/setup.sh`
 
-See also: [extras/README.md](extras/README.md)
+See also: [server/extras/README.md](server/extras/README.md)
 
 ---
 
