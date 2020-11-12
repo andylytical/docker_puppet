@@ -10,5 +10,5 @@ apt update \
  
 # Setup custom ENC
 export QS_REPO=https://github.com/ncsa/puppetserver-enc.git
-#export QS_GIT_BRANCH=better_setup_script
+export QS_GIT_BRANCH=fix_setup/add_enc_to_puppet_config
 curl https://raw.githubusercontent.com/andylytical/quickstart/master/quickstart.sh | bash
