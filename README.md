@@ -1,3 +1,12 @@
+# ARCHIVED
+
+## See instead: https://github.com/ncsa/docker_puppet
+
+This repo has been archived. All new work will be done at the linked repo above.
+
+---
+
+
 # docker_puppet
 
 ### Requirements
